@@ -13,14 +13,22 @@
  */
 
 /**
- * Main file.
+ * Main file
  */
-
-require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-widget.php';
 
 /**
- * Register widget.
+ * Register widget
  */
 add_action( 'widgets_init', function() {
+	require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-widget.php';
 	register_widget( 'HC_Suggestions_Widget' );
+} );
+
+/**
+ * Register REST controller
+ */
+add_action( 'rest_api_init', function() {
+	require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-rest-controller.php';
+	$controller = new HC_Suggestions_REST_Controller;
+	$controller->register_routes();
 } );

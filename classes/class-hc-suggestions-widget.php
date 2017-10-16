@@ -37,6 +37,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 * @param array $instance The settings for the particular instance of the widget.
 	 */
 	public function widget( $args, $instance ) {
+		$tab_id_prefix = 'hc-suggestions-tab-';
+
 		$user_terms = wpmn_get_object_terms(
 			get_current_user_id(),
 			self::TAXONOMY,
@@ -45,26 +47,48 @@ class HC_Suggestions_Widget extends WP_Widget {
 			]
 		);
 
-		$tax_query = new WP_Tax_Query( [
-			[
-				'taxonomy' => self::TAXONOMY,
-				'field'    => 'name',
-				'operator' => 'OR',
-				'terms'    => $user_terms,
-			],
-		] );
+		/**
+		 * identifier => label
+		 *
+		 * would be nice to pull labels from an authoritative source rather than hardcode,
+		 * but that doesn't exist for fake post types anyway
+		 */
+		$post_types = [
+			EP_BP_API::MEMBER_TYPE_NAME => 'Members',
+			EP_BP_API::GROUP_TYPE_NAME => 'Groups',
+			'humcore_deposit' => 'Deposits',
+		];
 
-		$hcs_query = new WP_Query( [
-			'ep_integrate' => true,
-			'tax_query' => $tax_query,
-		] );
+		echo '<div class="hc-suggestions-widget">'; // main widget container
+		echo '<ul>'; // open tabs
 
-		$results = $hcs_query->get_posts();
+		// tabs
+		foreach ( $post_types as $identifier => $label ) {
+			printf(
+				'<li><a href="#%s">%s</a></li>',
+				esc_attr( $tab_id_prefix . $identifier ),
+				$label
+			);
+		}
 
-		echo '<pre>';
-		var_dump( $hcs_query );
-		var_dump( $results );
-		echo '</pre>';
+		echo '</ul>'; // close tabs
+
+		// results containers
+		foreach ( $post_types as $identifier => $label ) {
+			printf(
+				'<div id="%s" data-hc-suggestions-query="%s" data-hc-suggestions-type="%s"></div>',
+				esc_attr( $tab_id_prefix . $identifier ),
+				implode( ' OR ', $user_terms ),
+				//$search_query = 'alkjsdlkfjlskdjflksjdfkljdsf'; // @todo test no results logic
+				$identifier
+			);
+		}
+
+		// embed inline for performance
+		echo '<style>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/css/hc-suggestions.css' ) . '</style>';
+		echo '<script>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/js/hc-suggestions.js' ) . '</script>';
+		echo '<script>jQuery( hc_suggestions.init )</script>';
+		echo '</div>'; // close class="hc-suggestions-widget"
 	}
 
 	/**
@@ -86,27 +110,6 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		return [];
-	}
-
-	/**
-	 * Get terms by user id
-	 *
-	 * @uses Mla_Academic_Interests::
-	 * @global $mla_academic_interests
-	 *
-	 * @param int $user_id Optional. User for whom to get terms. Default current user.
-	 * @return array
-	 */
-	public function get_terms_for_user( int $user_id ) {
-		global $mla_academic_interests;
-
-		$terms = [];
-
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-
-		return $terms;
 	}
 
 }

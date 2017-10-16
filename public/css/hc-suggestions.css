@@ -1,0 +1,33 @@
+.hc-suggestions-widget > ul {
+	margin-bottom: 0;
+	list-style: none;
+}
+
+.hc-suggestions-widget > ul li {
+	border-radius: 5px 5px 0 0;
+	border-width: 1px 1px 0 1px;
+	margin: 0 0.25em;
+}
+
+.hc-suggestions-widget > ul li a {
+	display: inline-block;
+	padding: 0.25em 1em;
+}
+
+.hc-suggestions-widget .ui-state-active {
+	background-color: #ececec;
+}
+
+.hc-suggestions-widget > ul li a:hover {
+	text-decoration: none;
+}
+
+.hc-suggestions-widget .ui-tabs-nav li.ui-state-default a {
+	color: black;
+}
+
+.hc-suggestions-widget .ui-tabs-panel.ui-widget-content {
+	border: 1px solid #ececec;
+	border-radius: 5px;
+	padding: 1em 0;
+}
