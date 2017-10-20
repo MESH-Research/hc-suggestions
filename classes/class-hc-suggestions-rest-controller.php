@@ -56,6 +56,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			'ep_integrate' => true,
 			'post_type' => $params['post_type'],
 			's' => $params['s'],
+			'paged' => $params['paged'],
 		];
 
 		switch ( $params['post_type'] ) {

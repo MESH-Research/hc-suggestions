@@ -7,21 +7,31 @@ window.hc_suggestions  = {
 	/**
 	 * Load results into target element via XHR.
 	 *
-	 * @param object                  $params object containing "s" & "post_type" keys to query
-	 * @param jQuery element | string $target element into which to inject search results
+	 * @param object         $params object containing "s" & "post_type" keys to query
+	 * @param jQuery element $target element into which to inject search results
 	 */
 	load_results: function( params, target ) {
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
-			var html = 'No results.';
-
 			if ( data.results.length ) {
 				html = '';
 
 				$.each( data.results, function( i, result ) {
 					html += '<li>' + result + '</li>';
 				} );
+
+				$( html ).appendTo( target );
+
+				$( target ).find( '.button' ).remove();
+				$( '<a href="#" class="button">More results</a>' )
+					.appendTo( target )
+					.on( 'click', function( e ) {
+						e.preventDefault();
+						params.paged = 1 + ( params.paged || 1 );
+						hc_suggestions.load_results( params, target );
+					} );
+			} else {
+				$( target ).html( 'No results.' );
 			}
-			target.html( html );
 		} );
 	},
 
