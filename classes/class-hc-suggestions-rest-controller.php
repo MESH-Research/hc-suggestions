@@ -38,8 +38,6 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function query( WP_REST_Request $data ) {
-		global $post; // need to access the permalink property to get correct links for buddypress fake post types
-
 		/**
 		 * The global $current_user isn't populated here, have to do it ourselves.
 		 * This won't work without shibd setting this header.
@@ -83,17 +81,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		if ( $hcs_query->have_posts() ) {
 			while ( $hcs_query->have_posts() ) {
 				$hcs_query->the_post();
-
-				ob_start();
-
-				printf(
-					'<a href="%s" title="%s">%s</a>',
-					$post->permalink, // the_permalink() is wrong for fake post types, access directly instead
-					the_title_attribute( 'echo=0' ),
-					get_the_title()
-				);
-
-				$response_data[] = ob_get_clean();
+				$response_data[] = $this->_get_formatted_post();
 			}
 
 		}
@@ -107,5 +95,21 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		);
 
 		return $response;
+	}
+
+	/**
+	 * Format a search result for output
+	 *
+	 * @global $post current post in the search results loop
+	 * @return string formatted post markup
+	 */
+	public function _get_formatted_post() {
+		global $post;
+
+		ob_start();
+
+		bp_get_template_part( 'suggestions/' . $post->post_type );
+
+		return ob_get_clean();
 	}
 }

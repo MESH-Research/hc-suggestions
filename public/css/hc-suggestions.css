@@ -31,3 +31,50 @@
 	border-radius: 5px;
 	padding: 1em 0;
 }
+
+.hc-suggestions-widget .button {
+	margin-left: 2em 3em 1em;
+}
+
+#hc-suggestions-tab-user img {
+	border-radius: 50%;
+	max-height: 123px;
+	width: auto;
+}
+#hc-suggestions-tab-user li {
+	list-style: none;
+	margin-top: 1em;
+}
+#hc-suggestions-tab-user li:first-child {
+	margin-top: 0;
+}
+#hc-suggestions-tab-user li a {
+	color: black;
+	display: flex;
+	text-decoration: none;
+}
+#hc-suggestions-tab-user .left {
+	flex: 1;
+}
+#hc-suggestions-tab-user .right {
+	flex: 3;
+}
+#hc-suggestions-tab-user .name,
+#hc-suggestions-tab-user .title,
+#hc-suggestions-tab-user .affiliation,
+#hc-suggestions-tab-user .terms {
+	display: block;
+}
+#hc-suggestions-tab-user .name {
+	font-size: 1.5em;
+}
+#hc-suggestions-tab-user .term {
+	border: 1px solid #ececec;
+	border-radius: 5px;
+	line-height: 3em;
+	margin: 0 0.25em;
+	padding: 0.25em 0.5em;
+}
+#hc-suggestions-tab-user .term:first-child {
+	margin-left: 0;
+}

@@ -32,3 +32,12 @@ add_action( 'rest_api_init', function() {
 	$controller = new HC_Suggestions_REST_Controller;
 	$controller->register_routes();
 } );
+
+/**
+ * Register template stack
+ */
+add_action( 'bp_loaded', function () {
+	bp_register_template_stack( function() {
+		return trailingslashit( __DIR__ ) . '/templates/';
+	} );
+} );
