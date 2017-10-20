@@ -40,6 +40,12 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	public function query( WP_REST_Request $data ) {
 		global $post; // need to access the permalink property to get correct links for buddypress fake post types
 
+		/**
+		 * The global $current_user isn't populated here, have to do it ourselves.
+		 * This won't work without shibd setting this header.
+		 */
+		wp_set_current_user( get_user_by( 'login', $data->get_header( 'employeenumber' ) ) );
+
 		$params = $data->get_query_params();
 
 		/**
@@ -50,7 +56,10 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			'ep_integrate' => true,
 			'post_type' => $params['post_type'],
 			's' => $params['s'],
+			// Exclude users already being followed by the current user.
+			'post__not_in' => bp_follow_get_following( [ 'user_id' => get_current_user_id() ] ),
 		] );
+
 
 		$response_data = [];
 
