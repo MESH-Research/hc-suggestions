@@ -52,16 +52,29 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		 * $_REQUEST param names are hardcoded to be parsed by elasticpress-buddypress,
 		 * (and possibly elsewhere) so the names must match here
 		 */
-		$hcs_query = new WP_Query( [
+		$hcs_query_args = [
 			'ep_integrate' => true,
 			'post_type' => $params['post_type'],
 			's' => $params['s'],
-			// Exclude users already being followed by the current user.
-			'post__not_in' => bp_follow_get_following( [ 'user_id' => get_current_user_id() ] ),
-		] );
+		];
+
+		switch ( $params['post_type'] ) {
+			case EP_BP_API::MEMBER_TYPE_NAME:
+				// Exclude users already being followed by the current user.
+				$hcs_query_args['post__not_in'] = bp_follow_get_following( [ 'user_id' => get_current_user_id() ] );
+				break;
+			case EP_BP_API::GROUP_TYPE_NAME:
+				// Exclude groups already joined by the current user.
+				$hcs_query_args['post__not_in'] = array_keys( bp_get_user_groups( get_current_user_id() ) );
+				break;
+			default:
+				break;
+		}
 
 
 		$response_data = [];
+
+		$hcs_query = new WP_Query( $hcs_query_args );
 
 		if ( $hcs_query->have_posts() ) {
 			while ( $hcs_query->have_posts() ) {
