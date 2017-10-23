@@ -36,45 +36,52 @@
 	margin: 2em 3em 1em;
 }
 
-#hc-suggestions-tab-user img {
+.hc-suggestions-widget img {
 	border-radius: 50%;
-	max-height: 123px;
+	max-height: 70px;
 	width: auto;
 }
-#hc-suggestions-tab-user li {
+.hc-suggestions-widget li {
 	list-style: none;
 	margin-top: 1em;
 }
-#hc-suggestions-tab-user li:first-child {
+.hc-suggestions-widget li:first-child {
 	margin-top: 0;
 }
-#hc-suggestions-tab-user li a {
+.hc-suggestions-widget li a {
 	color: black;
 	display: flex;
 	text-decoration: none;
 }
-#hc-suggestions-tab-user .left {
+.hc-suggestions-widget .left {
 	flex: 1;
 }
-#hc-suggestions-tab-user .right {
+.hc-suggestions-widget .right {
 	flex: 3;
 }
-#hc-suggestions-tab-user .name,
-#hc-suggestions-tab-user .title,
-#hc-suggestions-tab-user .affiliation,
-#hc-suggestions-tab-user .terms {
+.hc-suggestions-widget .name,
+.hc-suggestions-widget .title,
+.hc-suggestions-widget .affiliation,
+.hc-suggestions-widget .terms {
 	display: block;
+	line-height: 1.2em;
 }
-#hc-suggestions-tab-user .name {
-	font-size: 1.5em;
+.hc-suggestions-widget .name {
+	font-size: 1.2em;
 }
-#hc-suggestions-tab-user .term {
+.hc-suggestions-widget .title,
+.hc-suggestions-widget .affiliation {
+	font-size: 0.8em;
+}
+.hc-suggestions-widget .terms {
+	line-height: 2em;
+}
+.hc-suggestions-widget .terms .term {
 	border: 1px solid #ececec;
 	border-radius: 5px;
-	line-height: 3em;
-	margin: 0 0.25em;
-	padding: 0.25em 0.5em;
+	margin: 0 0.1em;
+	padding: 0.1em 0.3em;
 }
-#hc-suggestions-tab-user .term:first-child {
+.hc-suggestions-widget .term:first-child {
 	margin-left: 0;
 }
