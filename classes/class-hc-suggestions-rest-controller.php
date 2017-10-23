@@ -64,13 +64,29 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				break;
 			case EP_BP_API::GROUP_TYPE_NAME:
 				// Exclude groups already joined by the current user.
-				$hcs_query_args['post__not_in'] =  array_keys( bp_get_user_groups(
+				$exclude_group_ids = array_keys( bp_get_user_groups(
 					get_current_user_id(),
 					[
 						'is_admin' => null,
 						'is_mod' => null,
 					]
-				) ) ;
+				) );
+
+				// Exclude groups on society networks the current user does not belong to.
+				$current_user_memberships = Humanities_Commons::hcommons_get_user_memberships();
+				$non_member_society_groups = groups_get_groups( [
+					'group_type__not_in' => $current_user_memberships['societies'],
+					'per_page' => 999, // TODO This won't scale well.
+				] );
+				foreach ( $non_member_society_groups['groups'] as $group ) {
+					$exclude_group_ids[] = $group->id;
+				}
+
+				// Exclude private groups.
+				// TODO should do this here, but there's no 'status' param to groups_get_groups until bp 2.9.
+				// For now, check in the loop below and just exclude there.
+
+				$hcs_query_args['post__not_in'] = array_unique( $exclude_group_ids );
 				break;
 			case 'humcore_deposit':
 				// Exclude deposits authored by the current user.
@@ -87,6 +103,15 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		if ( $hcs_query->have_posts() ) {
 			while ( $hcs_query->have_posts() ) {
 				$hcs_query->the_post();
+
+				// TODO once BP is upgraded to 2.9, move this to the switch above.
+				if ( EP_BP_API::GROUP_TYPE_NAME === $params['post_type'] ) {
+					$group = groups_get_group( get_the_ID() );
+					if ( 'public' !== $group->status ) {
+						continue;
+					}
+				}
+
 				$response_data[] = $this->_get_formatted_post();
 			}
 
