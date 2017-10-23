@@ -17,8 +17,8 @@ preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
 $bp_join_button = bp_get_group_join_button( $group );
-preg_match( '/<a.*\/a>/', $bp_join_button, $matches ); // Only need <a>, no container.
-$join_button = $matches[0];
+preg_match( '/<a.*\/a>/', $bp_join_button, $matches );
+$join_button = $matches[0]; // Only need <a>, no container.
 $join_button = preg_replace( '/Join Group/', 'Join', $join_button ); // Replace button text.
 $join_button = preg_replace( '/group-button/', 'group-button btn', $join_button ); // Add consistent btn class.
 
@@ -32,7 +32,7 @@ $join_button = preg_replace( '/group-button/', 'group-button btn', $join_button 
 
 		<span class="right">
 			<span class="name"><?php echo $group->name; ?></span>
-			<span class="description"><?php echo $group->description; ?></span>
+			<span class="description"><?php echo wp_trim_words( $group->description, 20 ); ?></span>
 		</span>
 
 	</a>
