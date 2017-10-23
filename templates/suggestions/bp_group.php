@@ -8,7 +8,11 @@ $group = groups_get_group( $post->ID );
  * The return value of bp_core_fetch_avatar() can contain badges and other markup.
  * We only want the <img>.
  */
-$bp_avatar = bp_get_group_avatar( $group->ID );
+$bp_avatar =  bp_core_fetch_avatar( [
+	'item_id'    => $group->id,
+	'avatar_dir' => 'group-avatars',
+	'object'     => 'group',
+] );
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
