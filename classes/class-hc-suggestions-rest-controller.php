@@ -64,7 +64,13 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				break;
 			case EP_BP_API::GROUP_TYPE_NAME:
 				// Exclude groups already joined by the current user.
-				$hcs_query_args['post__not_in'] = array_keys( bp_get_user_groups( get_current_user_id() ) );
+				$hcs_query_args['post__not_in'] =  array_keys( bp_get_user_groups(
+					get_current_user_id(),
+					[
+						'is_admin' => null,
+						'is_mod' => null,
+					]
+				) ) ;
 				break;
 			case 'humcore_deposit':
 				// Exclude deposits authored by the current user.
