@@ -109,3 +109,10 @@
 .hc-suggestions-widget .term:first-child {
 	margin-left: 0;
 }
+
+/**
+ * exceptions & overrides
+ */
+#hc-suggestions-tab-humcore_deposit img {
+	border-radius: 0;
+}

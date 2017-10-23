@@ -10,6 +10,23 @@ $bp_avatar = '<img src="/app/plugins/humcore/assets/doc-icon-48x48.png" />';
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
+// CORE deposit icons & download URLs depend on file data set in post meta.
+$post_meta = get_post_meta( $post->ID );
+$file_metadata = json_decode( $post_meta['_deposit_file_metadata'][0], true );
+
+// CORE icon.
+$file_type_data = wp_check_filetype( $file_metadata['files'][0]['filename'], wp_get_mime_types() );
+$avatar_img = sprintf( '<img class="deposit-icon" src="%s" alt="%s" />',
+	'/app/plugins/humcore/assets/' . esc_attr( $file_type_data['ext'] ) . '-icon-48x48.png',
+	esc_attr( $file_type_data['ext'] )
+);
+
+// CORE download URL.
+$download_url = sprintf( '/deposits/download/%s/%s/%s/',
+	$file_metadata['files'][0]['pid'],
+	$file_metadata['files'][0]['datastream_id'],
+	$file_metadata['files'][0]['filename']
+);
 ?>
 
 <div class="result">
@@ -26,5 +43,6 @@ $avatar_img = $matches[0];
 
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
+			<a class="btn" href="<?php echo $download_url ?>">Download</a>
 	</div>
 </div>
