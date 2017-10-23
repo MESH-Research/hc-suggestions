@@ -1,3 +1,6 @@
+/**
+ * tabs
+ */
 .hc-suggestions-widget > ul {
 	margin-bottom: 0;
 	list-style: none;
@@ -32,33 +35,52 @@
 	padding: 1em 0;
 }
 
-.hc-suggestions-widget .button {
+/**
+ * content
+ */
+
+.hc-suggestions-widget .btn.more {
 	margin: 2em 3em 1em;
 }
-
 .hc-suggestions-widget img {
 	border-radius: 50%;
 	max-height: 70px;
 	width: auto;
 }
-.hc-suggestions-widget li {
-	list-style: none;
+.hc-suggestions-widget a:not(.btn) {
+	color: black;
+	text-decoration: none;
+}
+
+.hc-suggestions-widget .result {
+	display: flex;
 	margin-top: 1em;
 }
-.hc-suggestions-widget li:first-child {
+.hc-suggestions-widget .result:first-child {
 	margin-top: 0;
 }
-.hc-suggestions-widget li a {
-	color: black;
+.hc-suggestions-widget .result > a {
 	display: flex;
-	text-decoration: none;
+	flex: 4;
 }
 .hc-suggestions-widget .left {
 	flex: 1;
+	text-align: center;
 }
 .hc-suggestions-widget .right {
 	flex: 3;
-	padding-right: 2em;
+	line-height: 1em;
+	padding: 0 2em;
+}
+.hc-suggestions-widget .result .actions {
+	flex: 1;
+	margin-right: 1em;
+	text-align: center;
+}
+.hc-suggestions-widget .actions .btn {
+	display: inline-block;
+	margin: 0.25em;
+	padding: 0.25em;
 }
 .hc-suggestions-widget .name,
 .hc-suggestions-widget .title,
@@ -71,13 +93,14 @@
 	font-size: 1.2em;
 }
 .hc-suggestions-widget .title,
-.hc-suggestions-widget .affiliation {
+.hc-suggestions-widget .affiliation,
+.hc-suggestions-widget .description {
 	font-size: 0.8em;
 }
 .hc-suggestions-widget .terms {
 	line-height: 2em;
 }
-.hc-suggestions-widget .terms .term {
+.hc-suggestions-widget .term {
 	border: 1px solid #ececec;
 	border-radius: 5px;
 	margin: 0 0.1em;

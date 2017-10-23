@@ -28,23 +28,35 @@ $common_term_names = array_intersect(
 
 ?>
 
-<a href="<?php echo $post->permalink ?>">
-	<span class="left">
-		<?php echo $avatar_img; ?>
-	</span>
-
-	<span class="right">
-		<span class="name"><?php echo $name; ?></span>
-		<span class="title"><?php echo $title; ?></span>
-		<span class="affiliation"><?php echo $affiliation; ?></span>
-
-		<span class="terms">
-			<?php
-				foreach ( $common_term_names as $term_name ) {
-					printf( '<span class="term">%s</span>', $term_name );
-				}
-			?>
+<div class="result">
+	<a href="<?php echo $post->permalink ?>">
+		<span class="left">
+			<?php echo $avatar_img; ?>
 		</span>
 
-	</span>
-</a>
+		<span class="right">
+			<span class="name"><?php echo $name; ?></span>
+			<span class="title"><?php echo $title; ?></span>
+			<span class="affiliation"><?php echo $affiliation; ?></span>
+
+			<span class="terms">
+				<?php
+					foreach ( $common_term_names as $term_name ) {
+						printf( '<span class="term">%s</span>', $term_name );
+					}
+				?>
+			</span>
+
+		</span>
+	</a>
+
+	<div class="actions">
+			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
+			<?php bp_follow_add_follow_button( [
+				'leader_id' => $user->ID,
+				'follower_id' => get_current_user_id(),
+				'link_class' => 'btn',
+				'wrapper' => false,
+			] ); ?>
+	</div>
+</div>

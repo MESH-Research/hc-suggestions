@@ -16,13 +16,13 @@ window.hc_suggestions  = {
 				html = '';
 
 				$.each( data.results, function( i, result ) {
-					html += '<li>' + result + '</li>';
+					html += result;
 				} );
 
 				$( html ).appendTo( target );
 
-				$( target ).find( '.button' ).remove();
-				$( '<a href="#" class="button">More results</a>' )
+				$( target ).find( '.btn.more' ).remove();
+				$( '<a href="#" class="btn more">More results</a>' )
 					.appendTo( target )
 					.on( 'click', function( e ) {
 						e.preventDefault();

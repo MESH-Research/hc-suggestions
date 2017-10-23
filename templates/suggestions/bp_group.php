@@ -12,15 +12,29 @@ $bp_avatar = bp_get_group_avatar( $group->ID );
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
+$bp_join_button = bp_get_group_join_button( $group );
+preg_match( '/<a.*\/a>/', $bp_join_button, $matches ); // Only need <a>, no container.
+$join_button = $matches[0];
+$join_button = preg_replace( '/Join Group/', 'Join', $join_button ); // Replace button text.
+$join_button = preg_replace( '/group-button/', 'group-button btn', $join_button ); // Add consistent btn class.
+
 ?>
 
-<a href="<?php echo $post->permalink ?>">
-	<span class="left">
-		<?php echo $avatar_img; ?>
-	</span>
+<div class="result">
+	<a href="<?php echo $post->permalink ?>">
+		<span class="left">
+			<?php echo $avatar_img; ?>
+		</span>
 
-	<span class="right">
-		<span class="name"><?php echo $group->name; ?></span>
-		<span class="description"><?php echo $group->description; ?></span>
-	</span>
-</a>
+		<span class="right">
+			<span class="name"><?php echo $group->name; ?></span>
+			<span class="description"><?php echo $group->description; ?></span>
+		</span>
+
+	</a>
+
+	<div class="actions">
+			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
+			<?php echo $join_button; ?>
+	</div>
+</div>

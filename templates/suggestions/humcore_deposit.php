@@ -12,13 +12,19 @@ $avatar_img = $matches[0];
 
 ?>
 
-<a href="<?php echo $post->permalink ?>">
-	<span class="left">
-		<?php echo $avatar_img; ?>
-	</span>
+<div class="result">
+	<a href="<?php echo $post->permalink ?>">
+		<span class="left">
+			<?php echo $avatar_img; ?>
+		</span>
 
-	<span class="right">
-		<span class="name"><?php the_title(); ?></span>
-		<span class="description"><?php echo wp_trim_words( get_the_excerpt(), 20 ); ?></span>
-	</span>
-</a>
+		<span class="right">
+			<span class="name"><?php the_title(); ?></span>
+			<span class="description"><?php echo wp_trim_words( get_the_excerpt(), 20 ); ?></span>
+		</span>
+	</a>
+
+	<div class="actions">
+			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
+	</div>
+</div>
