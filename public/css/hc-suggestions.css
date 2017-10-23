@@ -58,6 +58,7 @@
 }
 .hc-suggestions-widget .right {
 	flex: 3;
+	padding-right: 2em;
 }
 .hc-suggestions-widget .name,
 .hc-suggestions-widget .title,
