@@ -12,7 +12,9 @@ window.hc_suggestions  = {
 	 */
 	load_results: function( params, target ) {
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
-			if ( data.results.length ) {
+			$( target ).find( '.btn.more' ).remove();
+
+			if ( data.results.length > 0 ) {
 				html = '';
 
 				$.each( data.results, function( i, result ) {
@@ -21,7 +23,6 @@ window.hc_suggestions  = {
 
 				$( html ).appendTo( target );
 
-				$( target ).find( '.btn.more' ).remove();
 				$( '<a href="#" class="btn more">More results</a>' )
 					.appendTo( target )
 					.on( 'click', function( e ) {
@@ -30,7 +31,7 @@ window.hc_suggestions  = {
 						hc_suggestions.load_results( params, target );
 					} );
 			} else {
-				$( target ).html( 'No results.' );
+				$( '<p>No results.</p>' ).appendTo( target );
 			}
 		} );
 	},

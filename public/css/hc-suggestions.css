@@ -39,6 +39,9 @@
  * content
  */
 
+.hc-suggestions-widget > div > p {
+	margin: 1em 2em;
+}
 .hc-suggestions-widget .btn.more {
 	margin: 2em 3em 1em;
 }
