@@ -2,14 +2,6 @@
 
 global $post;
 
-/**
- * The return value of bp_core_fetch_avatar() can contain badges and other markup.
- * We only want the <img>.
- */
-$bp_avatar = '<img src="/app/plugins/humcore/assets/doc-icon-48x48.png" />';
-preg_match( '/<img.*>/', $bp_avatar, $matches );
-$avatar_img = $matches[0];
-
 // CORE deposit icons & download URLs depend on file data set in post meta.
 $post_meta = get_post_meta( $post->ID );
 $file_metadata = json_decode( $post_meta['_deposit_file_metadata'][0], true );
