@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template for bp_group post results
+ *
+ * @package HC_Suggestions
+ */
 
 global $post;
 global $humanities_commons;
@@ -9,11 +14,13 @@ $group = groups_get_group( $post->ID );
  * The return value of bp_core_fetch_avatar() can contain badges and other markup.
  * We only want the <img>.
  */
-$bp_avatar =  bp_core_fetch_avatar( [
-	'item_id'    => $group->id,
-	'avatar_dir' => 'group-avatars',
-	'object'     => 'group',
-] );
+$bp_avatar = bp_core_fetch_avatar(
+	[
+		'item_id'    => $group->id,
+		'avatar_dir' => 'group-avatars',
+		'object'     => 'group',
+	]
+);
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
@@ -30,7 +37,7 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 ?>
 
 <div class="result">
-	<a href="<?php echo $post->permalink ?>">
+	<a href="<?php echo $post->permalink; ?>">
 		<span class="left">
 			<?php echo $avatar_img; ?>
 		</span>
@@ -43,14 +50,16 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 	</a>
 
 	<div class="actions">
-			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
+			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
 			<?php echo $join_button; ?>
-			<?php if ( is_user_logged_in() ) {
+			<?php
+			if ( is_user_logged_in() ) {
 				printf(
 					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
 					$post->ID,
 					$post->post_type
 				);
-			} ?>
+			}
+			?>
 	</div>
 </div>

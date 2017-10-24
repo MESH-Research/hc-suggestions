@@ -61,10 +61,12 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
 		$user_hidden_posts = $this->_get_user_hidden_posts();
 
-		$user_hidden_posts[ $params['post_type'] ] = array_unique( array_merge(
-			isset( $user_hidden_posts[ $params['post_type'] ] ) ? $user_hidden_posts[ $params['post_type'] ] : [],
-			[ $params['post_id'] ]
-		) );
+		$user_hidden_posts[ $params['post_type'] ] = array_unique(
+			array_merge(
+				isset( $user_hidden_posts[ $params['post_type'] ] ) ? $user_hidden_posts[ $params['post_type'] ] : [],
+				[ $params['post_id'] ]
+			)
+		);
 
 		$result = update_user_meta( get_current_user_id(), self::META_KEY_USER_HIDDEN_POSTS, $user_hidden_posts );
 
@@ -104,24 +106,32 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		switch ( $params['post_type'] ) {
 			case EP_BP_API::MEMBER_TYPE_NAME:
 				// Exclude users already being followed by the current user.
-				$hcs_query_args['post__not_in'] = bp_follow_get_following( [ 'user_id' => get_current_user_id() ] );
+				$hcs_query_args['post__not_in'] = bp_follow_get_following(
+					[
+						'user_id' => get_current_user_id(),
+					]
+				);
 				break;
 			case EP_BP_API::GROUP_TYPE_NAME:
 				// Exclude groups already joined by the current user.
-				$exclude_group_ids = array_keys( bp_get_user_groups(
-					get_current_user_id(),
-					[
-						'is_admin' => null,
-						'is_mod' => null,
-					]
-				) );
+				$exclude_group_ids = array_keys(
+					bp_get_user_groups(
+						get_current_user_id(),
+						[
+							'is_admin' => null,
+							'is_mod' => null,
+						]
+					)
+				);
 
 				// Exclude groups on society networks the current user does not belong to.
 				$current_user_memberships = Humanities_Commons::hcommons_get_user_memberships();
-				$non_member_society_groups = groups_get_groups( [
-					'group_type__not_in' => $current_user_memberships['societies'],
-					'per_page' => 999, // TODO This won't scale well.
-				] );
+				$non_member_society_groups = groups_get_groups(
+					[
+						'group_type__not_in' => $current_user_memberships['societies'],
+						'per_page' => 999, // TODO This won't scale well.
+					]
+				);
 				foreach ( $non_member_society_groups['groups'] as $group ) {
 					$exclude_group_ids[] = $group->id;
 				}
@@ -129,7 +139,6 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				// Exclude private groups.
 				// TODO should do this here, but there's no 'status' param to groups_get_groups until bp 2.9.
 				// For now, check in the loop below and just exclude there.
-
 				$hcs_query_args['post__not_in'] = array_unique( $exclude_group_ids );
 				break;
 			case 'humcore_deposit':
@@ -143,10 +152,12 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		// Exclude user-hidden posts.
 		$user_hidden_posts = $this->_get_user_hidden_posts();
 		if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
-			$hcs_query_args['post__not_in'] = array_unique( array_merge(
-				$hcs_query_args['post__not_in'],
-				$user_hidden_posts[ $params['post_type'] ]
-			) );
+			$hcs_query_args['post__not_in'] = array_unique(
+				array_merge(
+					$hcs_query_args['post__not_in'],
+					$user_hidden_posts[ $params['post_type'] ]
+				)
+			);
 		}
 
 		$response_data = [];
@@ -167,7 +178,6 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
 				$response_data[] = $this->_get_formatted_post();
 			}
-
 		}
 
 		$response = new WP_REST_Response;
@@ -192,7 +202,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
 		ob_start();
 
-		bp_get_template_part( 'suggestions/' . $post->post_type );
+		bp_get_template_part( 'suggestions/' . str_replace( '_', '-', $post->post_type ) );
 
 		return ob_get_clean();
 	}

@@ -48,10 +48,10 @@ class HC_Suggestions_Widget extends WP_Widget {
 		);
 
 		/**
-		 * identifier => label
+		 * Identifier => label.
 		 *
-		 * would be nice to pull labels from an authoritative source rather than hardcode,
-		 * but that doesn't exist for fake post types anyway
+		 * Would be nice to pull labels from an authoritative source rather than hardcode,
+		 * but that doesn't exist for fake post types anyway.
 		 */
 		$post_types = [
 			EP_BP_API::MEMBER_TYPE_NAME => 'Members',
@@ -59,10 +59,10 @@ class HC_Suggestions_Widget extends WP_Widget {
 			'humcore_deposit' => 'Deposits',
 		];
 
-		echo '<div class="hc-suggestions-widget">'; // main widget container
-		echo '<ul>'; // open tabs
+		echo '<div class="hc-suggestions-widget">'; // main widget container.
+		echo '<ul>'; // open tabs.
 
-		// tabs
+		// tabs.
 		foreach ( $post_types as $identifier => $label ) {
 			printf(
 				'<li><a href="#%s">%s</a></li>',
@@ -71,24 +71,24 @@ class HC_Suggestions_Widget extends WP_Widget {
 			);
 		}
 
-		echo '</ul>'; // close tabs
+		echo '</ul>'; // close tabs.
 
-		// results containers
+		// results containers.
 		foreach ( $post_types as $identifier => $label ) {
 			printf(
 				'<div id="%s" data-hc-suggestions-query="%s" data-hc-suggestions-type="%s"></div>',
 				esc_attr( $tab_id_prefix . $identifier ),
 				implode( ' OR ', $user_terms ),
-				//$search_query = 'alkjsdlkfjlskdjflksjdfkljdsf'; // @todo test no results logic
+				// $search_query = 'alkjsdlkfjlskdjflksjdfkljdsf'; // @todo test no results logic
 				$identifier
 			);
 		}
 
-		// embed inline for performance
+		// embed inline for performance.
 		echo '<style>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/css/hc-suggestions.css' ) . '</style>';
 		echo '<script>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/js/hc-suggestions.js' ) . '</script>';
 		echo '<script>jQuery( hc_suggestions.init )</script>';
-		echo '</div>'; // close class="hc-suggestions-widget"
+		echo '</div>'; // close class="hc-suggestions-widget".
 	}
 
 	/**

@@ -19,25 +19,33 @@
 /**
  * Register widget
  */
-add_action( 'widgets_init', function() {
-	require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-widget.php';
-	register_widget( 'HC_Suggestions_Widget' );
-} );
+add_action(
+	'widgets_init', function() {
+		require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-widget.php';
+		register_widget( 'HC_Suggestions_Widget' );
+	}
+);
 
 /**
  * Register REST controller
  */
-add_action( 'rest_api_init', function() {
-	require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-rest-controller.php';
-	$controller = new HC_Suggestions_REST_Controller;
-	$controller->register_routes();
-} );
+add_action(
+	'rest_api_init', function() {
+		require_once trailingslashit( __DIR__ ) . 'classes/class-hc-suggestions-rest-controller.php';
+		$controller = new HC_Suggestions_REST_Controller;
+		$controller->register_routes();
+	}
+);
 
 /**
  * Register template stack
  */
-add_action( 'bp_loaded', function () {
-	bp_register_template_stack( function() {
-		return trailingslashit( __DIR__ ) . '/templates/';
-	} );
-} );
+add_action(
+	'bp_loaded', function () {
+		bp_register_template_stack(
+			function() {
+				return trailingslashit( __DIR__ ) . '/templates/';
+			}
+		);
+	}
+);

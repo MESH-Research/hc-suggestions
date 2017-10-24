@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template for user post results
+ *
+ * @package HC_Suggestions
+ */
 
 use \MLA\Commons\Profile;
 
@@ -11,10 +16,12 @@ global $post;
  * The return value of bp_core_fetch_avatar() can contain badges and other markup.
  * We only want the <img>.
  */
-$bp_avatar = bp_core_fetch_avatar( [
-	'item_id' => $post->ID,
-	'type' => 'thumb',
-] );
+$bp_avatar = bp_core_fetch_avatar(
+	[
+		'item_id' => $post->ID,
+		'type' => 'thumb',
+	]
+);
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
@@ -23,14 +30,22 @@ $title = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $post->ID 
 $affiliation = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_INSTITUTIONAL_OR_OTHER_AFFILIATION, $post->ID );
 
 $common_term_names = array_intersect(
-	wpmn_get_object_terms( get_current_user_id(), HC_Suggestions_Widget::TAXONOMY, [ 'fields' => 'names' ] ),
-	wpmn_get_object_terms( $post->ID, HC_Suggestions_Widget::TAXONOMY, [ 'fields' => 'names' ] )
+	wpmn_get_object_terms(
+		get_current_user_id(), HC_Suggestions_Widget::TAXONOMY, [
+			'fields' => 'names',
+		]
+	),
+	wpmn_get_object_terms(
+		$post->ID, HC_Suggestions_Widget::TAXONOMY, [
+			'fields' => 'names',
+		]
+	)
 );
 
 ?>
 
 <div class="result">
-	<a href="<?php echo $post->permalink ?>">
+	<a href="<?php echo $post->permalink; ?>">
 		<span class="left">
 			<?php echo $avatar_img; ?>
 		</span>
@@ -42,9 +57,9 @@ $common_term_names = array_intersect(
 
 			<span class="terms">
 				<?php
-					foreach ( $common_term_names as $term_name ) {
-						printf( '<span class="term">%s</span>', $term_name );
-					}
+				foreach ( $common_term_names as $term_name ) {
+					printf( '<span class="term">%s</span>', $term_name );
+				}
 				?>
 			</span>
 
@@ -52,19 +67,25 @@ $common_term_names = array_intersect(
 	</a>
 
 	<div class="actions">
-			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
-			<?php bp_follow_add_follow_button( [
-				'leader_id' => $post->ID,
-				'follower_id' => get_current_user_id(),
-				'link_class' => 'btn',
-				'wrapper' => false,
-			] ); ?>
-			<?php if ( is_user_logged_in() ) {
+			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
+			<?php
+			bp_follow_add_follow_button(
+				[
+					'leader_id' => $post->ID,
+					'follower_id' => get_current_user_id(),
+					'link_class' => 'btn',
+					'wrapper' => false,
+				]
+			);
+			?>
+			<?php
+			if ( is_user_logged_in() ) {
 				printf(
 					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
 					$post->ID,
 					$post->post_type
 				);
-			} ?>
+			}
+			?>
 	</div>
 </div>
