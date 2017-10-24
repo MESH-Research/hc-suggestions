@@ -59,10 +59,12 @@ $common_term_names = array_intersect(
 				'link_class' => 'btn',
 				'wrapper' => false,
 			] ); ?>
-			<?php printf(
-				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
-				$post->ID,
-				$post->post_type
-			) ?>
+			<?php if ( is_logged_in() ) {
+				printf(
+					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+					$post->ID,
+					$post->post_type
+				);
+			} ?>
 	</div>
 </div>

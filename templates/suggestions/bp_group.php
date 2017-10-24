@@ -45,10 +45,12 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
 			<?php echo $join_button; ?>
-			<?php printf(
-				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
-				$post->ID,
-				$post->post_type
-			) ?>
+			<?php if ( is_logged_in() ) {
+				printf(
+					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+					$post->ID,
+					$post->post_type
+				);
+			} ?>
 	</div>
 </div>
