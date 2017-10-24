@@ -44,5 +44,10 @@ $download_url = sprintf( '/deposits/download/%s/%s/%s/',
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
 			<a class="btn" href="<?php echo $download_url ?>">Download</a>
+			<?php printf(
+				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+				$post->ID,
+				$post->post_type
+			) ?>
 	</div>
 </div>

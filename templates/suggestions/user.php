@@ -2,28 +2,29 @@
 
 use \MLA\Commons\Profile;
 
+/**
+ * A WP_User in WP_Post disguise.
+ */
 global $post;
-
-$user = get_userdata( $post->ID );
 
 /**
  * The return value of bp_core_fetch_avatar() can contain badges and other markup.
  * We only want the <img>.
  */
 $bp_avatar = bp_core_fetch_avatar( [
-	'item_id' => $user->ID,
+	'item_id' => $post->ID,
 	'type' => 'thumb',
 ] );
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
-$name = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_NAME, $user->ID );
-$title = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $user->ID );
-$affiliation = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_INSTITUTIONAL_OR_OTHER_AFFILIATION, $user->ID );
+$name = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_NAME, $post->ID );
+$title = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $post->ID );
+$affiliation = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_INSTITUTIONAL_OR_OTHER_AFFILIATION, $post->ID );
 
 $common_term_names = array_intersect(
 	wpmn_get_object_terms( get_current_user_id(), HC_Suggestions_Widget::TAXONOMY, [ 'fields' => 'names' ] ),
-	wpmn_get_object_terms( $user->ID, HC_Suggestions_Widget::TAXONOMY, [ 'fields' => 'names' ] )
+	wpmn_get_object_terms( $post->ID, HC_Suggestions_Widget::TAXONOMY, [ 'fields' => 'names' ] )
 );
 
 ?>
@@ -53,10 +54,15 @@ $common_term_names = array_intersect(
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink ?>">View</a>
 			<?php bp_follow_add_follow_button( [
-				'leader_id' => $user->ID,
+				'leader_id' => $post->ID,
 				'follower_id' => get_current_user_id(),
 				'link_class' => 'btn',
 				'wrapper' => false,
 			] ); ?>
+			<?php printf(
+				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+				$post->ID,
+				$post->post_type
+			) ?>
 	</div>
 </div>

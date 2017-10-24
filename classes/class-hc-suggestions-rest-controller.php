@@ -10,25 +10,69 @@
  */
 class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
+	/**
+	 * User meta key for hidden posts.
+	 */
+	const META_KEY_USER_HIDDEN_POSTS = 'hc_suggestions_hidden_posts';
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->namespace = 'hc-suggestions/v1';
-		$this->rest_base = '/query';
 	}
 
 	/**
-	 * Registers the routes for the objects of the controller.
+	 * Registers the routes for the objects of the controller
 	 */
 	public function register_routes() {
 		register_rest_route(
-			$this->namespace, $this->rest_base, [
+			$this->namespace,
+			'/query',
+			[
 				'methods' => 'GET',
 				'callback' => [ $this, 'query' ],
 			]
 		);
+		register_rest_route(
+			$this->namespace,
+			'/hide',
+			[
+				'methods' => 'POST',
+				'callback' => [ $this, 'hide' ],
+			]
+		);
+	}
+
+	/**
+	 * Hide a post from appearing in suggestions for the current user
+	 *
+	 * @param WP_REST_Request $data request data. Expected to contain "post_id" & "post_type" params.
+	 * @return WP_REST_Response
+	 */
+	public function hide( WP_REST_Request $data ) {
+		/**
+		 * The global $current_user isn't populated here, have to do it ourselves.
+		 * This won't work without shibd setting this header.
+		 */
+		wp_set_current_user( get_user_by( 'login', $_SERVER['HTTP_EMPLOYEENUMBER'] ) );
+
+		$params = $data->get_query_params();
+
+		$user_hidden_posts = $this->_get_user_hidden_posts();
+
+		$user_hidden_posts[ $params['post_type'] ] = array_unique( array_merge(
+			isset( $user_hidden_posts[ $params['post_type'] ] ) ? $user_hidden_posts[ $params['post_type'] ] : [],
+			[ $params['post_id'] ]
+		) );
+
+		$result = update_user_meta( get_current_user_id(), self::META_KEY_USER_HIDDEN_POSTS, $user_hidden_posts );
+
+		$response = new WP_REST_Response;
+
+		$response->set_status( $result ? 200 : 500 );
+
+		return $response;
 	}
 
 	/**
@@ -42,7 +86,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		 * The global $current_user isn't populated here, have to do it ourselves.
 		 * This won't work without shibd setting this header.
 		 */
-		wp_set_current_user( get_user_by( 'login', $data->get_header( 'employeenumber' ) ) );
+		wp_set_current_user( get_user_by( 'login', $_SERVER['HTTP_EMPLOYEENUMBER'] ) );
 
 		$params = $data->get_query_params();
 
@@ -96,6 +140,15 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				break;
 		}
 
+		// Exclude user-hidden posts.
+		$user_hidden_posts = $this->_get_user_hidden_posts();
+		if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
+			$hcs_query_args['post__not_in'] = array_unique( array_merge(
+				$hcs_query_args['post__not_in'],
+				$user_hidden_posts[ $params['post_type'] ]
+			) );
+		}
+
 		$response_data = [];
 
 		$hcs_query = new WP_Query( $hcs_query_args );
@@ -142,5 +195,22 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		bp_get_template_part( 'suggestions/' . $post->post_type );
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Fetch user-hidden posts for exclusion from query() or updating in hide()
+	 *
+	 * @return array multidimensional array e.g. [ 'user' => [ 1, 2 ], 'humcore_deposit => [ 1 ] ]
+	 */
+	function _get_user_hidden_posts() {
+		$retval = [];
+
+		$meta = get_user_meta( get_current_user_id(), self::META_KEY_USER_HIDDEN_POSTS, true );
+
+		if ( $meta ) {
+			$retval = $meta;
+		}
+
+		return $retval;
 	}
 }

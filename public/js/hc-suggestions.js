@@ -2,7 +2,29 @@ window.hc_suggestions  = {
 
 	widget_container_class: 'hc-suggestions-widget',
 
+	hide_path: '/wp-json/hc-suggestions/v1/hide?',
+
 	query_path: '/wp-json/hc-suggestions/v1/query?',
+
+	/**
+	 * Handle "hide" button click event.
+	 *
+	 * @param event $e
+	 */
+	handle_hide_click: function( e ) {
+		e.preventDefault();
+
+		var params = {
+			post_id: $( this ).attr( 'data-post-id' ),
+			post_type: $( this ).attr( 'data-post-type' ),
+		};
+
+		var result = $( this ).parents( '.result' );
+
+		$.post( hc_suggestions.hide_path + $.param( params ) ).then( function() {
+			result.fadeOut();
+		} );
+	},
 
 	/**
 	 * Load results into target element via XHR.
@@ -22,6 +44,8 @@ window.hc_suggestions  = {
 				} );
 
 				$( html ).appendTo( target );
+
+				$( target ).find( '.hide' ).on( 'click', hc_suggestions.handle_hide_click );
 
 				$( '<a href="#" class="btn more">More results</a>' )
 					.appendTo( target )
