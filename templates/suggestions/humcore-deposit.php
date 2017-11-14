@@ -29,16 +29,14 @@ $download_url = sprintf(
 ?>
 
 <div class="result">
-	<a href="<?php echo $post->permalink; ?>">
-		<span class="left">
+	<div class="image">
 			<?php echo $avatar_img; ?>
-		</span>
+	</div>
 
-		<span class="right">
-			<span class="name"><?php the_title(); ?></span>
-			<span class="description"><?php echo wp_trim_words( get_the_excerpt(), 20 ); ?></span>
-		</span>
-	</a>
+	<div class="excerpt">
+		<span class="name"><a href="<?php echo $post->permalink; ?>"><?php the_title(); ?></a></span>
+		<span class="description"><?php echo wp_trim_words( get_the_excerpt(), 20 ); ?></span>
+	</div>
 
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>

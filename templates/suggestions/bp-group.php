@@ -37,17 +37,14 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 ?>
 
 <div class="result">
-	<a href="<?php echo $post->permalink; ?>">
-		<span class="left">
-			<?php echo $avatar_img; ?>
-		</span>
+	<div class="image">
+		<?php echo $avatar_img; ?>
+	</div>
 
-		<span class="right">
-			<span class="name"><?php echo $group->name; ?></span>
-			<span class="description"><?php echo wp_trim_words( $group->description, 20 ); ?></span>
-		</span>
-
-	</a>
+	<div class="excerpt">
+		<span class="name"><a href="<?php echo $post->permalink; ?>"><?php echo $group->name; ?></a></span>
+		<span class="description"><?php echo wp_trim_words( $group->description, 20 ); ?></span>
+	</div>
 
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>

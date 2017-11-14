@@ -20,6 +20,8 @@ $bp_avatar = bp_core_fetch_avatar(
 	[
 		'item_id' => $post->ID,
 		'type' => 'thumb',
+		'width' => 70,
+		'height' => 70,
 	]
 );
 preg_match( '/<img.*>/', $bp_avatar, $matches );
@@ -45,26 +47,32 @@ $common_term_names = array_intersect(
 ?>
 
 <div class="result">
-	<a href="<?php echo $post->permalink; ?>">
-		<span class="left">
-			<?php echo $avatar_img; ?>
+	<div class="image">
+		<?php echo $avatar_img; ?>
+	</div>
+
+	<div class="excerpt">
+		<span class="name"><a href="<?php echo $post->permalink; ?>"><?php echo $name; ?></a></span>
+		<span class="title"><?php echo $title; ?></span>
+		<span class="affiliation"><?php echo $affiliation; ?></span>
+
+		<span class="terms">
+			<?php
+			foreach ( $common_term_names as $term_name ) {
+				$search_url = add_query_arg(
+					[ 'academic_interests' => urlencode( $term_name ) ],
+					bp_get_members_directory_permalink()
+				);
+				printf(
+					'<a class="term" href="%s">%s</a>',
+					$search_url,
+					$term_name
+				);
+			}
+			?>
 		</span>
 
-		<span class="right">
-			<span class="name"><?php echo $name; ?></span>
-			<span class="title"><?php echo $title; ?></span>
-			<span class="affiliation"><?php echo $affiliation; ?></span>
-
-			<span class="terms">
-				<?php
-				foreach ( $common_term_names as $term_name ) {
-					printf( '<span class="term">%s</span>', $term_name );
-				}
-				?>
-			</span>
-
-		</span>
-	</a>
+	</div>
 
 	<div class="actions">
 			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>

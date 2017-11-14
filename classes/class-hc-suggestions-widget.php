@@ -79,7 +79,6 @@ class HC_Suggestions_Widget extends WP_Widget {
 				'<div id="%s" data-hc-suggestions-query="%s" data-hc-suggestions-type="%s"></div>',
 				esc_attr( $tab_id_prefix . $identifier ),
 				implode( ' OR ', $user_terms ),
-				// $search_query = 'alkjsdlkfjlskdjflksjdfkljdsf'; // @todo test no results logic
 				$identifier
 			);
 		}
