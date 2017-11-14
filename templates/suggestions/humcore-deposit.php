@@ -33,7 +33,7 @@ $download_url = sprintf(
 
 <div class="result">
 	<div class="image">
-			<?php echo $avatar_img; ?>
+		<?php echo $avatar_img; ?>
 	</div>
 
 	<div class="excerpt">
@@ -42,16 +42,16 @@ $download_url = sprintf(
 	</div>
 
 	<div class="actions">
-			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
-			<a class="btn" href="<?php echo $download_url; ?>">Download</a>
-			<?php
-			if ( is_user_logged_in() ) {
-				printf(
-					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
-					$post->ID,
-					$post->post_type
-				);
-			}
-			?>
+		<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
+		<a class="btn" href="<?php echo $download_url; ?>">Download</a>
+		<?php
+		if ( is_user_logged_in() ) {
+			printf(
+				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+				$post->ID,
+				$post->post_type
+			);
+		}
+		?>
 	</div>
 </div>

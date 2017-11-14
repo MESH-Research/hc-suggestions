@@ -77,25 +77,25 @@ $common_term_names = array_intersect(
 	</div>
 
 	<div class="actions">
-			<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
-			<?php
-			bp_follow_add_follow_button(
-				[
-					'leader_id' => $post->ID,
-					'follower_id' => get_current_user_id(),
-					'link_class' => 'btn',
-					'wrapper' => false,
-				]
+		<a class="btn" href="<?php echo $post->permalink; ?>">View</a>
+		<?php
+		bp_follow_add_follow_button(
+			[
+				'leader_id' => $post->ID,
+				'follower_id' => get_current_user_id(),
+				'link_class' => 'btn',
+				'wrapper' => false,
+			]
+		);
+		?>
+		<?php
+		if ( is_user_logged_in() ) {
+			printf(
+				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+				$post->ID,
+				$post->post_type
 			);
-			?>
-			<?php
-			if ( is_user_logged_in() ) {
-				printf(
-					'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
-					$post->ID,
-					$post->post_type
-				);
-			}
-			?>
+		}
+		?>
 	</div>
 </div>
