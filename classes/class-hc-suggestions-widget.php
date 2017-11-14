@@ -84,9 +84,6 @@ class HC_Suggestions_Widget extends WP_Widget {
 			);
 		}
 
-		// embed inline for performance.
-		echo '<style>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/css/hc-suggestions.css' ) . '</style>';
-		echo '<script>' . file_get_contents( trailingslashit( __DIR__ ) . '../public/js/hc-suggestions.js' ) . '</script>';
 		echo '<script>jQuery( hc_suggestions.init )</script>';
 		echo '</div>'; // close class="hc-suggestions-widget".
 	}
