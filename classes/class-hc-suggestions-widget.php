@@ -22,6 +22,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 *
 	 * Would be nice to pull labels from an authoritative source rather than hardcode,
 	 * but that doesn't exist for fake post types anyway.
+	 *
+	 * @var array
 	 */
 	public $post_types = [
 		EP_BP_API::MEMBER_TYPE_NAME => 'Members',
@@ -130,13 +132,16 @@ class HC_Suggestions_Widget extends WP_Widget {
 		$humcore_deposit_tab_enabled = (bool) $instance['humcore_deposit_tab_enabled'];
 		?>
 
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'buddypress'); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" style="width: 100%" /></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'buddypress' ); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" style="width: 100%" /></label></p>
 
-		<p><label for="<?php echo $this->get_field_id( 'description' ); ?>"><?php _e('Description:', 'buddypress'); ?> </label><textarea class="widefat" id="<?php echo $this->get_field_id( 'description' ); ?>" name="<?php echo $this->get_field_name( 'description' ); ?>"><?php echo esc_attr( $description ); ?></textarea></p>
+		<p><label for="<?php echo $this->get_field_id( 'description' ); ?>"><?php _e( 'Description:', 'buddypress' ); ?> </label><textarea class="widefat" id="<?php echo $this->get_field_id( 'description' ); ?>" name="<?php echo $this->get_field_name( 'description' ); ?>"><?php echo esc_attr( $description ); ?></textarea></p>
 
-		<?php foreach( $this->post_types as $identifier => $label ):; ?>
+		<?php
+		foreach ( $this->post_types as $identifier => $label ) :
+			;
+?>
 			<?php $option_name = $identifier . '_tab_enabled'; ?>
-			<p><label for="<?php echo $this->get_field_id( $option_name ) ?>"><input type="checkbox" name="<?php echo $this->get_field_name( $option_name ) ?>" id="<?php echo $this->get_field_id( $option_name ) ?>" value="1" <?php checked( (bool) $instance[ $option_name ] ) ?> /> <?php echo "<strong>$label</strong> Tab Enabled"; ?></label></p>
+			<p><label for="<?php echo $this->get_field_id( $option_name ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( $option_name ); ?>" id="<?php echo $this->get_field_id( $option_name ); ?>" value="1" <?php checked( (bool) $instance[ $option_name ] ); ?> /> <?php echo "<strong>$label</strong> Tab Enabled"; ?></label></p>
 		<?php endforeach; ?>
 
 		<?php

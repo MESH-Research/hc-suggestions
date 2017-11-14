@@ -14,7 +14,9 @@ $file_metadata = json_decode( $post_meta['_deposit_file_metadata'][0], true );
 // CORE icon.
 $file_type_data = wp_check_filetype( $file_metadata['files'][0]['filename'], wp_get_mime_types() );
 if ( empty( $file_type_data['ext'] ) ) {
-	$file_type_data = [ 'ext' => 'txt' ]; // Fallback in case we didn't find an actual type.
+	$file_type_data = [
+		'ext' => 'txt',
+	]; // Fallback in case we didn't find an actual type.
 }
 $avatar_img = sprintf(
 	'<img class="deposit-icon" src="%s" alt="%s" />',
