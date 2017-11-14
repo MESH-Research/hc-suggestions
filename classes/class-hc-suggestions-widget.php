@@ -16,6 +16,20 @@ class HC_Suggestions_Widget extends WP_Widget {
 	const TAXONOMY = 'mla_academic_interests';
 
 	/**
+	 * Post types supported by the widget.
+	 *
+	 * Identifier => label.
+	 *
+	 * Would be nice to pull labels from an authoritative source rather than hardcode,
+	 * but that doesn't exist for fake post types anyway.
+	 */
+	public $post_types = [
+		EP_BP_API::MEMBER_TYPE_NAME => 'Members',
+		EP_BP_API::GROUP_TYPE_NAME => 'Groups',
+		'humcore_deposit' => 'Deposits',
+	];
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -47,40 +61,47 @@ class HC_Suggestions_Widget extends WP_Widget {
 			]
 		);
 
-		/**
-		 * Identifier => label.
-		 *
-		 * Would be nice to pull labels from an authoritative source rather than hardcode,
-		 * but that doesn't exist for fake post types anyway.
-		 */
-		$post_types = [
-			EP_BP_API::MEMBER_TYPE_NAME => 'Members',
-			EP_BP_API::GROUP_TYPE_NAME => 'Groups',
-			'humcore_deposit' => 'Deposits',
-		];
+		echo '<div class="hc-suggestions-widget widget">'; // main widget container.
 
-		echo '<div class="hc-suggestions-widget">'; // main widget container.
+		if ( ! empty( $instance['title'] ) ) {
+			printf(
+				'<h3 class="widget-title">%s</h3>',
+				$instance['title']
+			);
+		}
+
+		if ( ! empty( $instance['description'] ) ) {
+			printf(
+				'<p class="widget-description">%s</p>',
+				$instance['description']
+			);
+		}
+
 		echo '<ul>'; // open tabs.
 
 		// tabs.
-		foreach ( $post_types as $identifier => $label ) {
-			printf(
-				'<li><a href="#%s">%s</a></li>',
-				esc_attr( $tab_id_prefix . $identifier ),
-				$label
-			);
+		foreach ( $this->post_types as $identifier => $label ) {
+			if ( $instance[ $identifier . '_tab_enabled' ] ) {
+				printf(
+					'<li><a href="#%s">%s</a></li>',
+					esc_attr( $tab_id_prefix . $identifier ),
+					$label
+				);
+			}
 		}
 
 		echo '</ul>'; // close tabs.
 
 		// results containers.
-		foreach ( $post_types as $identifier => $label ) {
-			printf(
-				'<div id="%s" data-hc-suggestions-query="%s" data-hc-suggestions-type="%s"></div>',
-				esc_attr( $tab_id_prefix . $identifier ),
-				implode( ' OR ', $user_terms ),
-				$identifier
-			);
+		foreach ( $this->post_types as $identifier => $label ) {
+			if ( $instance[ $identifier . '_tab_enabled' ] ) {
+				printf(
+					'<div id="%s" data-hc-suggestions-query="%s" data-hc-suggestions-type="%s"></div>',
+					esc_attr( $tab_id_prefix . $identifier ),
+					implode( ' OR ', $user_terms ),
+					$identifier
+				);
+			}
 		}
 
 		echo '<script>jQuery( hc_suggestions.init )</script>';
@@ -93,7 +114,32 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 * @param array $instance The widget options.
 	 */
 	public function form( $instance ) {
-		echo __METHOD__;
+		$defaults = array(
+			'title' => 'Recommended for You',
+			'description' => '',
+			EP_BP_API::MEMBER_TYPE_NAME . '_tab_enabled' => true,
+			EP_BP_API::GROUP_TYPE_NAME . '_tab_enabled' => true,
+			'humcore_deposit_tab_enabled' => true,
+		);
+		$instance = wp_parse_args( (array) $instance, $defaults );
+
+		$title = strip_tags( $instance['title'] );
+		$description = strip_tags( $instance['description'] );
+		$user_tab_enabled = (bool) $instance['user_tab_enabled'];
+		$bp_group_tab_enabled = (bool) $instance['bp_group_tab_enabled'];
+		$humcore_deposit_tab_enabled = (bool) $instance['humcore_deposit_tab_enabled'];
+		?>
+
+		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'buddypress'); ?> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" style="width: 100%" /></label></p>
+
+		<p><label for="<?php echo $this->get_field_id( 'description' ); ?>"><?php _e('Description:', 'buddypress'); ?> </label><textarea class="widefat" id="<?php echo $this->get_field_id( 'description' ); ?>" name="<?php echo $this->get_field_name( 'description' ); ?>"><?php echo esc_attr( $description ); ?></textarea></p>
+
+		<?php foreach( $this->post_types as $identifier => $label ):; ?>
+			<?php $option_name = $identifier . '_tab_enabled'; ?>
+			<p><label for="<?php echo $this->get_field_id( $option_name ) ?>"><input type="checkbox" name="<?php echo $this->get_field_name( $option_name ) ?>" id="<?php echo $this->get_field_id( $option_name ) ?>" value="1" <?php checked( (bool) $instance[ $option_name ] ) ?> /> <?php echo "<strong>$label</strong> Tab Enabled"; ?></label></p>
+		<?php endforeach; ?>
+
+		<?php
 	}
 
 	/**
@@ -105,7 +151,15 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
-		return [];
+		$instance = $old_instance;
+
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['description'] = strip_tags( $new_instance['description'] );
+		$instance['user_tab_enabled'] = (bool) $new_instance['user_tab_enabled'];
+		$instance['bp_group_tab_enabled'] = (bool) $new_instance['bp_group_tab_enabled'];
+		$instance['humcore_deposit_tab_enabled'] = (bool) $new_instance['humcore_deposit_tab_enabled'];
+
+		return $instance;
 	}
 
 }

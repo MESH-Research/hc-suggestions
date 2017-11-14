@@ -2,15 +2,27 @@
  * tabs
  */
 
+.hc-suggestions-widget {
+
+}
+
 .hc-suggestions-widget ul.ui-tabs-nav {
 	margin-bottom: 0;
 	list-style: none;
 }
 
 .hc-suggestions-widget ul.ui-tabs-nav li {
-	border-radius: 5px 5px 0 0;
+	border-radius: 5px;
 	border-width: 1px 1px 0 1px;
 	margin: 0 0.25em;
+}
+
+.hc-suggestions-widget ul.ui-tabs-nav li:first-child {
+	margin-left: 0;
+}
+
+.hc-suggestions-widget ul.ui-tabs-nav li:first-child:last-child {
+	display: none;
 }
 
 .hc-suggestions-widget ul.ui-tabs-nav li a {
@@ -31,11 +43,9 @@
 }
 
 .hc-suggestions-widget .ui-tabs-panel.ui-widget-content {
-	border: 1px solid #ececec;
-	border-radius: 5px;
 	display: table;
-	padding: 1em;
-	width: calc( 100% - 2em );
+	padding: 1em 0.5em;
+	width: calc( 100% - 1em );
 }
 
 
@@ -43,12 +53,16 @@
  * content
  */
 
+.hc-suggestions-widget .widget-description {
+	margin-bottom: 1em;
+}
+
 .hc-suggestions-widget > div > p {
 	margin: 1em 2em;
 }
 
 .hc-suggestions-widget .btn.more {
-	margin: 2em 3em 1em;
+	margin-top: 1em;
 }
 
 .hc-suggestions-widget .result {
