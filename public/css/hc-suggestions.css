@@ -47,7 +47,9 @@
 }
 .hc-suggestions-widget img {
 	border-radius: 50%;
+	height: auto;
 	max-height: 70px;
+	max-width: 70px;
 	width: auto;
 }
 .hc-suggestions-widget a:not(.btn) {
