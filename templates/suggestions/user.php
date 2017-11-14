@@ -60,7 +60,9 @@ $common_term_names = array_intersect(
 			<?php
 			foreach ( $common_term_names as $term_name ) {
 				$search_url = add_query_arg(
-					[ 'academic_interests' => urlencode( $term_name ) ],
+					[
+						'academic_interests' => urlencode( $term_name ),
+					],
 					bp_get_members_directory_permalink()
 				);
 				printf(
