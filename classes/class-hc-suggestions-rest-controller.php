@@ -100,7 +100,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			'ep_integrate' => true,
 			'post_type' => $params['post_type'],
 			's' => $params['s'],
-			'paged' => $params['paged'],
+			'paged' => isset( $params['paged'] ) ? $params['paged'] : 1,
 		];
 
 		if ( is_user_logged_in() ) {
