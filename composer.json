@@ -17,6 +17,6 @@
     }
   ],
   "require": {
-    "mlaa/elasticpress-buddypress": "*"
+    "mlaa/elasticpress-buddypress": "dev-master"
   }
 }
