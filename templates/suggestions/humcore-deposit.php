@@ -8,7 +8,7 @@
 global $post;
 
 // CORE deposit icons & download URLs depend on file data set in post meta.
-$post_meta = get_post_meta( $post->ID );
+$post_meta = $post->post_meta;
 $file_metadata = json_decode( $post_meta['_deposit_file_metadata'][0], true );
 
 // CORE icon.
