@@ -43,7 +43,7 @@
 }
 
 .hc-suggestions-widget .ui-tabs-panel.ui-widget-content {
-	display: table;
+	display: table !important;
 	padding: 1em 0.5em;
 	width: calc( 100% - 1em );
 }
