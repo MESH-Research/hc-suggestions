@@ -3,7 +3,7 @@
  */
 
 .hc-suggestions-widget {
-
+	overflow: scroll;
 }
 
 .hc-suggestions-widget ul.ui-tabs-nav {
