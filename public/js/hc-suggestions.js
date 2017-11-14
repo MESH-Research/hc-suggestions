@@ -60,12 +60,23 @@ window.hc_suggestions  = {
 		} );
 	},
 
+	handle_resize: function( e ) {
+		var widget = $( '.' + hc_suggestions.widget_container_class );
+
+		if ( 450 > widget.outerWidth() ) {
+			widget.addClass( 'narrow' );
+		} else {
+			widget.removeClass( 'narrow' );
+		}
+	},
+
 	/**
 	 * Initialize widget tab ui & load results for each tab
 	 */
 	init: function() {
 		$( '.' + hc_suggestions.widget_container_class )
 			.tabs()
+			.on( 'resize', hc_suggestions.handle_resize )
 			.find( 'div' ).each( function( i, el ) {
 				hc_suggestions.load_results(
 					{

@@ -150,3 +150,16 @@
 #hc-suggestions-tab-humcore_deposit img {
 	border-radius: 0;
 }
+
+
+/**
+ * responsive
+ */
+.hc-suggestions-widget.narrow .image,
+.hc-suggestions-widget.narrow .actions {
+	display: none;
+}
+
+.hc-suggestions-widget.narrow .excerpt {
+	padding: 0;
+}
