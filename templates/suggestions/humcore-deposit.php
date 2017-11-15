@@ -35,7 +35,7 @@ $download_url = sprintf(
 
 <div class="result" data-post-id="<?php echo $post->ID; ?>">
 	<div class="image">
-		<?php echo $avatar_img; ?>
+		<a href="<?php echo $post->permalink; ?>"><?php echo $avatar_img; ?></a>
 	</div>
 
 	<div class="excerpt">
