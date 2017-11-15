@@ -31,6 +31,8 @@ window.hc_suggestions  = {
 	 * @param jQuery element $target element into which to inject search results
 	 */
 	load_results: function( params, target ) {
+		params.cache_buster = Date.now();
+
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
 			$( target ).find( '.btn.more' ).remove();
 
