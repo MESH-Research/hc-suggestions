@@ -113,7 +113,8 @@
 .hc-suggestions-widget .actions .btn {
 	display: block;
 	margin: 0.25em;
-	padding: 0.25em;
+	padding: 0.25em 0.5em;
+	white-space: nowrap;
 }
 
 .hc-suggestions-widget .name,

@@ -52,7 +52,7 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 		<?php
 		if ( is_user_logged_in() ) {
 			printf(
-				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide</a>',
+				'<a class="hide btn" data-post-id="%s" data-post-type="%s" href="#">Hide suggestion</a>',
 				$post->ID,
 				$post->post_type
 			);
