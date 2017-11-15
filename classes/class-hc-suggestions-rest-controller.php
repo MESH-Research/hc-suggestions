@@ -106,14 +106,20 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		if ( is_user_logged_in() ) {
 			switch ( $params['post_type'] ) {
 				case EP_BP_API::MEMBER_TYPE_NAME:
+					// Exclude self.
+					$exclude_user_ids = [ get_current_user_id() ];
+
 					// Exclude users already being followed by the current user.
-					$hcs_query_args['post__not_in'] = array_merge(
-						get_current_user_id(),
-						bp_follow_get_following(
+					$exclude_user_ids = array_merge(
+						$exclude_user_ids,
+						(array) bp_follow_get_following(
 							[
 								'user_id' => get_current_user_id(),
 							]
-					) );
+						)
+					);
+
+					$hcs_query_args['post__not_in'] = array_unique( $exclude_user_ids );
 					break;
 				case EP_BP_API::GROUP_TYPE_NAME:
 					// Exclude groups already joined by the current user.
