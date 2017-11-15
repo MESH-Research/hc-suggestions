@@ -19,11 +19,9 @@ window.hc_suggestions  = {
 			post_type: $( this ).attr( 'data-post-type' ),
 		};
 
-		var result = $( this ).parents( '.result' );
+		$.post( hc_suggestions.hide_path + $.param( params ) );
 
-		$.post( hc_suggestions.hide_path + $.param( params ) ).then( function() {
-			result.fadeOut();
-		} );
+		$( this ).parents( '.result' ).fadeOut();
 	},
 
 	/**
