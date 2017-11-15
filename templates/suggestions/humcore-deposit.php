@@ -33,7 +33,7 @@ $download_url = sprintf(
 );
 ?>
 
-<div class="result">
+<div class="result" data-post-id="<?php echo $post->ID; ?>">
 	<div class="image">
 		<?php echo $avatar_img; ?>
 	</div>

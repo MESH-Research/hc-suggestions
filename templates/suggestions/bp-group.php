@@ -36,7 +36,7 @@ add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_b
 
 ?>
 
-<div class="result">
+<div class="result" data-post-id="<?php echo $post->ID; ?>">
 	<div class="image">
 		<?php echo $avatar_img; ?>
 	</div>

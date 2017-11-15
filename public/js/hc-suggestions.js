@@ -36,11 +36,16 @@ window.hc_suggestions  = {
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
 			$( target ).find( '.btn.more' ).remove();
 
-			if ( data.results.length > 0 ) {
+			if ( Object.keys( data.results ).length > 0 ) {
 				html = '';
 
 				$.each( data.results, function( i, result ) {
-					html += result;
+					// only append result if it's not already listed
+					if ( 0 === target.find( '.result[data-post-id="' + i + '"]' ).length ) {
+						html += result;
+					} else {
+						console.log( 'dupe', result );
+					}
 				} );
 
 				$( html ).appendTo( target );

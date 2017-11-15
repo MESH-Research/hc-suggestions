@@ -186,7 +186,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 					}
 				}
 
-				$response_data[] = $this->_get_formatted_post();
+				$response_data[ get_the_ID() ] = $this->_get_formatted_post();
 			}
 		}
 
