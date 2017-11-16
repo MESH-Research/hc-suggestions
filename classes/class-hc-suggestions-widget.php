@@ -28,7 +28,7 @@ class HC_Suggestions_Widget extends WP_Widget {
 	public $post_types = [
 		EP_BP_API::MEMBER_TYPE_NAME => 'Members',
 		EP_BP_API::GROUP_TYPE_NAME => 'Groups',
-		'humcore_deposit' => 'Deposits',
+		'humcore_deposit' => 'Scholarship',
 	];
 
 	/**
