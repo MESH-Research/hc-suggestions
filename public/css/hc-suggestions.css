@@ -2,10 +2,6 @@
  * tabs
  */
 
-.hc-suggestions-widget {
-	overflow: scroll;
-}
-
 .hc-suggestions-widget ul.ui-tabs-nav {
 	margin-bottom: 0;
 	list-style: none;
@@ -158,8 +154,17 @@
  * responsive
  */
 
+.hc-suggestions-widget.narrow ul.ui-tabs-nav {
+	display: inline-block;
+}
+
+.hc-suggestions-widget.narrow ul.ui-tabs-nav li {
+	float: none;
+	margin-bottom: 0.1em;
+	margin-left: 0;
+}
+
 .hc-suggestions-widget.narrow ul.ui-tabs-nav li a {
-	padding: 0.1em 0.25em;
 }
 
 .hc-suggestions-widget.narrow .image,
