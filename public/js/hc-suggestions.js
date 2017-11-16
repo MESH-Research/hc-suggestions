@@ -34,6 +34,8 @@ window.hc_suggestions  = {
 		params.cache_buster = Date.now();
 
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
+			var no_results_markup = $( '<p>No results.</p>' );
+
 			$( target ).find( '.btn.more' ).remove();
 
 			if ( Object.keys( data.results ).length > 0 ) {
@@ -43,8 +45,6 @@ window.hc_suggestions  = {
 					// only append result if it's not already listed
 					if ( 0 === target.find( '.result[data-post-id="' + i + '"]' ).length ) {
 						html += result;
-					} else {
-						console.log( 'dupe', result );
 					}
 				} );
 
@@ -59,8 +59,8 @@ window.hc_suggestions  = {
 						params.paged = 1 + ( params.paged || 1 );
 						hc_suggestions.load_results( params, target );
 					} );
-			} else {
-				$( '<p>No results.</p>' ).appendTo( target );
+			} else if ( ! $( target ).is( ':contains(' + no_results_markup.html() + ')' ) ) {
+				no_results_markup.appendTo( target );
 			}
 		} );
 	},
