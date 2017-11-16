@@ -157,6 +157,11 @@
 /**
  * responsive
  */
+
+.hc-suggestions-widget.narrow ul.ui-tabs-nav li a {
+	padding: 0.1em 0.25em;
+}
+
 .hc-suggestions-widget.narrow .image,
 .hc-suggestions-widget.narrow .actions {
 	display: none;
