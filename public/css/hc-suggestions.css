@@ -9,7 +9,6 @@
 
 .hc-suggestions-widget ul.ui-tabs-nav li {
 	border-radius: 5px;
-	border-width: 1px 1px 0 1px;
 	margin: 0 0.25em;
 }
 
@@ -35,6 +34,10 @@
 }
 
 .hc-suggestions-widget .ui-tabs-nav li.ui-state-default a {
+	border-color: #ececec;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
 	color: black;
 }
 
@@ -159,12 +162,11 @@
 }
 
 .hc-suggestions-widget.narrow ul.ui-tabs-nav li {
-	float: none;
-	margin-bottom: 0.1em;
-	margin-left: 0;
+	margin: 0 0.5em 0.5em 0;
 }
 
 .hc-suggestions-widget.narrow ul.ui-tabs-nav li a {
+	padding: 0 0.5em;
 }
 
 .hc-suggestions-widget.narrow .image,
