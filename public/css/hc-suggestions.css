@@ -148,6 +148,10 @@
  * exceptions & overrides
  */
 
+.home .hc-suggestions-widget:not(:last-child) {
+	margin-bottom: 30px;
+}
+
 #hc-suggestions-tab-humcore_deposit img {
 	border-radius: 0;
 }
