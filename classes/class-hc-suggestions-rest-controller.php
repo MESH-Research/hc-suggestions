@@ -68,6 +68,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			)
 		);
 
+		// Note $result will be false if $user_hidden_posts is the same as the old value.
 		$result = update_user_meta( get_current_user_id(), self::META_KEY_USER_HIDDEN_POSTS, $user_hidden_posts );
 
 		$response = new WP_REST_Response;
@@ -163,7 +164,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
 				$hcs_query_args['post__not_in'] = array_unique(
 					array_merge(
-						$hcs_query_args['post__not_in'],
+						(array) $hcs_query_args['post__not_in'],
 						$user_hidden_posts[ $params['post_type'] ]
 					)
 				);
