@@ -54,8 +54,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		if (
-			( $instance['show_when_logged_in'] && ! is_user_logged_in() ) ||
-			( $instance['show_when_logged_out'] && is_user_logged_in() )
+			( isset( $instance['show_when_logged_in'] ) && $instance['show_when_logged_in'] && ! is_user_logged_in() ) ||
+			( isset( $instance['show_when_logged_out'] ) && $instance['show_when_logged_out'] && is_user_logged_in() )
 		) {
 			return;
 		}
