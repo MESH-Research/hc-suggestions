@@ -31,7 +31,13 @@ window.hc_suggestions  = {
 	 * @param jQuery element $target element into which to inject search results
 	 */
 	load_results: function( params, target ) {
+		var loader_img = $(
+			'<img class="loader" src="/app/plugins/hc-suggestions/public/images/ajax-loader.gif" alt="Loading...">'
+		);
+
 		params.cache_buster = Date.now();
+
+		loader_img.appendTo( target );
 
 		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
 			var no_results_markup = $( '<p>No results.</p>' );
@@ -62,6 +68,8 @@ window.hc_suggestions  = {
 			} else if ( ! $( target ).is( ':contains(' + no_results_markup.html() + ')' ) ) {
 				no_results_markup.appendTo( target );
 			}
+
+			$( target ).find( loader_img ).remove();
 		} );
 	},
 
