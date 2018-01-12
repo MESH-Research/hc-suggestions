@@ -162,9 +162,11 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			// Exclude user-hidden posts.
 			$user_hidden_posts = $this->_get_user_hidden_posts();
 			if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
+				$existing_post__not_in = is_array( $hcs_query_args['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
+
 				$hcs_query_args['post__not_in'] = array_unique(
 					array_merge(
-						(array) $hcs_query_args['post__not_in'],
+						$existing_post__not_in,
 						$user_hidden_posts[ $params['post_type'] ]
 					)
 				);
@@ -182,7 +184,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				// TODO once BP is upgraded to 2.9, move this to the switch above.
 				if ( EP_BP_API::GROUP_TYPE_NAME === $params['post_type'] ) {
 					$group = groups_get_group( get_the_ID() );
-					if ( 'public' !== $group->status ) {
+					if ( ! $group || 'public' !== $group->status ) {
 						continue;
 					}
 				}
