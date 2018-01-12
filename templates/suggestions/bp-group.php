@@ -26,11 +26,13 @@ $avatar_img = $matches[0];
 
 remove_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_bp_get_group_join_button' ], 10, 2 );
 
-$bp_join_button = bp_get_group_join_button( $group );
-preg_match( '/<a.*\/a>/', $bp_join_button, $matches );
-$join_button = $matches[0]; // Only need <a>, no container.
-$join_button = preg_replace( '/Join Group/', 'Join', $join_button ); // Replace button text.
-$join_button = preg_replace( '/group-button/', 'group-button btn', $join_button ); // Add consistent btn class.
+$join_button = bp_get_group_join_button( $group );
+preg_match( '/<a.*\/a>/', $join_button, $matches );
+if ( isset( $matches[0] ) ) {
+	$join_button = $matches[0]; // Only need <a>, no container.
+	$join_button = preg_replace( '/Join Group/', 'Join', $join_button ); // Replace button text.
+	$join_button = preg_replace( '/group-button/', 'group-button btn', $join_button ); // Add consistent btn class.
+}
 
 add_filter( 'bp_get_group_join_button', [ $humanities_commons, 'hcommons_check_bp_get_group_join_button' ], 10, 2 );
 
