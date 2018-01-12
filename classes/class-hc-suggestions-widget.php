@@ -26,8 +26,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 * @var array
 	 */
 	public $post_types = [
-		EP_BP_API::MEMBER_TYPE_NAME => 'Members',
-		EP_BP_API::GROUP_TYPE_NAME => 'Groups',
+		'user' => 'Members',
+		'bp_group' => 'Groups',
 		'humcore_deposit' => 'Scholarship',
 	];
 
@@ -128,8 +128,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 			'description' => '',
 			'show_when_logged_in' => true,
 			'show_when_logged_out' => true,
-			EP_BP_API::MEMBER_TYPE_NAME . '_tab_enabled' => true,
-			EP_BP_API::GROUP_TYPE_NAME . '_tab_enabled' => true,
+			'user_tab_enabled' => true,
+			'bp_group_tab_enabled' => true,
 			'humcore_deposit_tab_enabled' => true,
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );

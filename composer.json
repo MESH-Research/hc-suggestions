@@ -15,8 +15,5 @@
         }
       }
     }
-  ],
-  "require": {
-    "mlaa/elasticpress-buddypress": "dev-master"
-  }
+  ]
 }
