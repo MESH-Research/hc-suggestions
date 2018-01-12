@@ -56,6 +56,8 @@ add_action(
 add_action(
 	'wp_enqueue_scripts', function () {
 		wp_enqueue_script( 'hc-suggestions', trailingslashit( plugins_url() ) . 'hc-suggestions/public/js/hc-suggestions.js' );
+		wp_localize_script( 'hc-suggestions', 'wpApiSettings', [ 'nonce' => wp_create_nonce( 'wp_rest' ) ] );
+
 		wp_enqueue_style( 'hc-suggestions', trailingslashit( plugins_url() ) . 'hc-suggestions/public/css/hc-suggestions.css' );
 	}
 );

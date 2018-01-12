@@ -85,12 +85,6 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function query( WP_REST_Request $data ) {
-		/**
-		 * The global $current_user isn't populated here, have to do it ourselves.
-		 * This won't work without shibd setting this header.
-		 */
-		wp_set_current_user( get_user_by( 'login', $_SERVER['HTTP_EMPLOYEENUMBER'] ) );
-
 		$params = $data->get_query_params();
 
 		/**

@@ -39,7 +39,10 @@ window.hc_suggestions  = {
 
 		loader_img.appendTo( target );
 
-		$.get( hc_suggestions.query_path + $.param( params ), function( data ) {
+		$.ajax( {
+			url: hc_suggestions.query_path + $.param( params ),
+			headers: { 'X-WP-Nonce': wpApiSettings.nonce }
+		} ).then( function( data ) {
 			var no_results_markup = $( '<p>No results.</p>' );
 
 			$( target ).find( '.btn.more' ).remove();
