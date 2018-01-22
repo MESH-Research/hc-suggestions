@@ -100,7 +100,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
 		if ( is_user_logged_in() ) {
 			switch ( $params['post_type'] ) {
-				case EP_BP_API::MEMBER_TYPE_NAME:
+				case 'user':
 					// Exclude self.
 					$exclude_user_ids = [ get_current_user_id() ];
 
@@ -116,7 +116,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 
 					$hcs_query_args['post__not_in'] = array_unique( $exclude_user_ids );
 					break;
-				case EP_BP_API::GROUP_TYPE_NAME:
+				case 'bp_group':
 					// Exclude groups already joined by the current user.
 					$exclude_group_ids = array_keys(
 						bp_get_user_groups(
@@ -176,7 +176,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				$hcs_query->the_post();
 
 				// TODO once BP is upgraded to 2.9, move this to the switch above.
-				if ( EP_BP_API::GROUP_TYPE_NAME === $params['post_type'] ) {
+				if ( 'bp_group' === $params['post_type'] ) {
 					$group = groups_get_group( get_the_ID() );
 					if ( ! $group || 'public' !== $group->status ) {
 						continue;
