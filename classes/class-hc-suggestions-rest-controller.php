@@ -156,7 +156,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			// Exclude user-hidden posts.
 			$user_hidden_posts = $this->_get_user_hidden_posts();
 			if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
-				$existing_post__not_in = is_array( $hcs_query_args['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
+				$existing_post__not_in = isset( $hcs_query_args['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
 
 				$hcs_query_args['post__not_in'] = array_unique(
 					array_merge(
