@@ -79,19 +79,17 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	}
 
 	/**
-	 * Query ElasticPress for relevant content
+	 * Helper function to define a WP_Query from WP_REST_Request params.
 	 *
-	 * @param WP_REST_Request $data request data. Expected to contain "s" & "post_type" params.
-	 * @return WP_REST_Response
+	 * @param array $params WP_REST_Request params.
+	 * @return WP_Query Query from request params.
 	 */
-	public function query( WP_REST_Request $data ) {
-		$params = $data->get_query_params();
-
+	protected function get_wp_query( array $params ) {
 		/**
 		 * $_REQUEST param names are hardcoded to be parsed by elasticpress-buddypress,
 		 * (and possibly elsewhere) so the names must match here
 		 */
-		$hcs_query_args = [
+		$wp_query_params = [
 			'ep_integrate' => true,
 			'post_type' => $params['post_type'],
 			's' => $params['s'],
@@ -114,7 +112,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 						)
 					);
 
-					$hcs_query_args['post__not_in'] = array_unique( $exclude_user_ids );
+					$wp_query_params['post__not_in'] = array_unique( $exclude_user_ids );
 					break;
 				case 'bp_group':
 					// Exclude groups already joined by the current user.
@@ -143,11 +141,11 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 					// Exclude private groups.
 					// TODO should do this here, but there's no 'status' param to groups_get_groups until bp 2.9.
 					// For now, check in the loop below and just exclude there.
-					$hcs_query_args['post__not_in'] = array_unique( $exclude_group_ids );
+					$wp_query_params['post__not_in'] = array_unique( $exclude_group_ids );
 					break;
 				case 'humcore_deposit':
 					// Exclude deposits authored by the current user.
-					$hcs_query_args['author__not_in'] = [ get_current_user_id() ];
+					$wp_query_params['author__not_in'] = [ get_current_user_id() ];
 					break;
 				default:
 					break;
@@ -156,9 +154,9 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			// Exclude user-hidden posts.
 			$user_hidden_posts = $this->_get_user_hidden_posts();
 			if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
-				$existing_post__not_in = isset( $hcs_query_args['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
+				$existing_post__not_in = isset( $wp_query_params['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
 
-				$hcs_query_args['post__not_in'] = array_unique(
+				$wp_query_params['post__not_in'] = array_unique(
 					array_merge(
 						$existing_post__not_in,
 						$user_hidden_posts[ $params['post_type'] ]
@@ -167,9 +165,19 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			}
 		}
 
+		return new WP_Query( $wp_query_params );
+	}
+
+	/**
+	 * Query ElasticPress for relevant content
+	 *
+	 * @param WP_REST_Request $data request data. Expected to contain "s" & "post_type" params.
+	 * @return WP_REST_Response
+	 */
+	public function query( WP_REST_Request $data ) {
 		$response_data = [];
 
-		$hcs_query = new WP_Query( $hcs_query_args );
+		$hcs_query = $this->get_wp_query( $data->get_query_params() );
 
 		if ( $hcs_query->have_posts() ) {
 			while ( $hcs_query->have_posts() ) {
