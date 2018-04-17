@@ -8,6 +8,8 @@ env:
 - WP_VERSION=latest
 before_script:
 - composer global require phpunit/phpunit
+- composer global require wp-coding-standards/wpcs
+- phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 - bash bin/install-wp-tests.sh $WP_VERSION
 script:
 - phpcs
