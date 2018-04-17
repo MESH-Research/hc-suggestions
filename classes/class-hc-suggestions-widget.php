@@ -26,8 +26,8 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 * @var array
 	 */
 	public $post_types = [
-		'user' => 'Members',
-		'bp_group' => 'Groups',
+		'user'            => 'Members',
+		'bp_group'        => 'Groups',
 		'humcore_deposit' => 'Scholarship',
 	];
 
@@ -39,7 +39,7 @@ class HC_Suggestions_Widget extends WP_Widget {
 			'HC_Suggestions_Widget',
 			'HC Suggestions Widget',
 			[
-				'classname' => 'HC_Suggestions_Widget',
+				'classname'   => 'HC_Suggestions_Widget',
 				'description' => 'Suggest content to members based on selected terms.',
 			]
 		);
@@ -124,22 +124,22 @@ class HC_Suggestions_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$defaults = array(
-			'title' => 'Recommended for You',
-			'description' => '',
-			'show_when_logged_in' => true,
-			'show_when_logged_out' => true,
-			'user_tab_enabled' => true,
-			'bp_group_tab_enabled' => true,
+			'title'                       => 'Recommended for You',
+			'description'                 => '',
+			'show_when_logged_in'         => true,
+			'show_when_logged_out'        => true,
+			'user_tab_enabled'            => true,
+			'bp_group_tab_enabled'        => true,
 			'humcore_deposit_tab_enabled' => true,
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults );
 
-		$title = strip_tags( $instance['title'] );
-		$description = strip_tags( $instance['description'] );
-		$show_when_logged_in = (bool) $instance['show_when_logged_in'];
-		$show_when_logged_out = (bool) $instance['show_when_logged_out'];
-		$user_tab_enabled = (bool) $instance['user_tab_enabled'];
-		$bp_group_tab_enabled = (bool) $instance['bp_group_tab_enabled'];
+		$title                       = strip_tags( $instance['title'] );
+		$description                 = strip_tags( $instance['description'] );
+		$show_when_logged_in         = (bool) $instance['show_when_logged_in'];
+		$show_when_logged_out        = (bool) $instance['show_when_logged_out'];
+		$user_tab_enabled            = (bool) $instance['user_tab_enabled'];
+		$bp_group_tab_enabled        = (bool) $instance['bp_group_tab_enabled'];
 		$humcore_deposit_tab_enabled = (bool) $instance['humcore_deposit_tab_enabled'];
 		?>
 
@@ -149,9 +149,9 @@ class HC_Suggestions_Widget extends WP_Widget {
 
 		<h3>Visibility</h3>
 
-		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_in' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>" value="1" <?php checked( (bool) $instance[ 'show_when_logged_in' ] ); ?> /> <?php echo "<strong>$label</strong> Show When Logged In"; ?></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_in' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_in'] ); ?> /> <?php echo "<strong>$label</strong> Show When Logged In"; ?></label></p>
 
-		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_out' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>" value="1" <?php checked( (bool) $instance[ 'show_when_logged_out' ] ); ?> /> <?php echo "<strong>$label</strong> Show When Logged Out"; ?></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_out' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_out'] ); ?> /> <?php echo "<strong>$label</strong> Show When Logged Out"; ?></label></p>
 
 		<h3>Tabs</h3>
 
@@ -174,12 +174,12 @@ class HC_Suggestions_Widget extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['description'] = strip_tags( $new_instance['description'] );
-		$instance['show_when_logged_in'] = (bool) $new_instance['show_when_logged_in'];
-		$instance['show_when_logged_out'] = (bool) $new_instance['show_when_logged_out'];
-		$instance['user_tab_enabled'] = (bool) $new_instance['user_tab_enabled'];
-		$instance['bp_group_tab_enabled'] = (bool) $new_instance['bp_group_tab_enabled'];
+		$instance['title']                       = strip_tags( $new_instance['title'] );
+		$instance['description']                 = strip_tags( $new_instance['description'] );
+		$instance['show_when_logged_in']         = (bool) $new_instance['show_when_logged_in'];
+		$instance['show_when_logged_out']        = (bool) $new_instance['show_when_logged_out'];
+		$instance['user_tab_enabled']            = (bool) $new_instance['user_tab_enabled'];
+		$instance['bp_group_tab_enabled']        = (bool) $new_instance['bp_group_tab_enabled'];
 		$instance['humcore_deposit_tab_enabled'] = (bool) $new_instance['humcore_deposit_tab_enabled'];
 
 		return $instance;

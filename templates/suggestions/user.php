@@ -19,16 +19,16 @@ global $post;
 $bp_avatar = bp_core_fetch_avatar(
 	[
 		'item_id' => $post->ID,
-		'type' => 'thumb',
-		'width' => 70,
-		'height' => 70,
+		'type'    => 'thumb',
+		'width'   => 70,
+		'height'  => 70,
 	]
 );
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
-$name = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_NAME, $post->ID );
-$title = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $post->ID );
+$name        = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_NAME, $post->ID );
+$title       = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $post->ID );
 $affiliation = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_INSTITUTIONAL_OR_OTHER_AFFILIATION, $post->ID );
 
 $common_term_names = array_intersect(
@@ -81,10 +81,10 @@ $common_term_names = array_intersect(
 		<?php
 		bp_follow_add_follow_button(
 			[
-				'leader_id' => $post->ID,
+				'leader_id'   => $post->ID,
 				'follower_id' => get_current_user_id(),
-				'link_class' => 'btn',
-				'wrapper' => false,
+				'link_class'  => 'btn',
+				'wrapper'     => false,
 			]
 		);
 		?>

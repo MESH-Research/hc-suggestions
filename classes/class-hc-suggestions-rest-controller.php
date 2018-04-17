@@ -30,7 +30,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			$this->namespace,
 			'/query',
 			[
-				'methods' => 'GET',
+				'methods'  => 'GET',
 				'callback' => [ $this, 'query' ],
 			]
 		);
@@ -38,7 +38,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			$this->namespace,
 			'/hide',
 			[
-				'methods' => 'POST',
+				'methods'  => 'POST',
 				'callback' => [ $this, 'hide' ],
 			]
 		);
@@ -93,9 +93,9 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		 */
 		$wp_query_params = [
 			'ep_integrate' => true,
-			'post_type' => $params['post_type'],
-			's' => $params['s'],
-			'paged' => isset( $params['paged'] ) ? $params['paged'] : 1,
+			'post_type'    => $params['post_type'],
+			's'            => $params['s'],
+			'paged'        => isset( $params['paged'] ) ? $params['paged'] : 1,
 		];
 
 		if ( is_user_logged_in() ) {
@@ -123,17 +123,17 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 							get_current_user_id(),
 							[
 								'is_admin' => null,
-								'is_mod' => null,
+								'is_mod'   => null,
 							]
 						)
 					);
 
 					// Exclude groups on society networks the current user does not belong to.
-					$current_user_memberships = Humanities_Commons::hcommons_get_user_memberships();
+					$current_user_memberships  = Humanities_Commons::hcommons_get_user_memberships();
 					$non_member_society_groups = groups_get_groups(
 						[
 							'group_type__not_in' => $current_user_memberships['societies'],
-							'per_page' => 999, // TODO This won't scale well.
+							'per_page'           => 999, // TODO This won't scale well.
 						]
 					);
 					foreach ( $non_member_society_groups['groups'] as $group ) {
