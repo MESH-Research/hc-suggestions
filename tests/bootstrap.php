@@ -3,6 +3,8 @@
  * Bootstraps WordPress, BuddyPress, and your code so that you can run tests on
  * it. The function `_manually_load_our_code` is probably the only section you
  * need to edit when adapting this for new projects.
+ *
+ * @package HC_Suggestions
  */
 
 // Get codebase versions.
