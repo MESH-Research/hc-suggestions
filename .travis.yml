@@ -4,11 +4,10 @@ php:
 - 7.0
 - 7.1
 env:
-- WP_VERSION=4.8
+- WP_VERSION=4.9
 - WP_VERSION=latest
-before_install:
-- git submodule update --init --recursive
-- composer install
 before_script:
-- bash tests/install.sh $WP_VERSION
-script: phpunit
+- bash bin/install-wp-tests.sh $WP_VERSION
+script:
+- phpcs
+- phpunit
