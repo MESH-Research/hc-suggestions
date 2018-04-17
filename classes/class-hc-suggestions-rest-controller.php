@@ -85,6 +85,8 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	 * @return WP_Query Query from request params.
 	 */
 	protected function get_wp_query( array $params ) {
+		global $wpdb;
+
 		/**
 		 * $_REQUEST param names are hardcoded to be parsed by elasticpress-buddypress,
 		 * (and possibly elsewhere) so the names must match here
@@ -144,8 +146,24 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 					$wp_query_params['post__not_in'] = array_unique( $exclude_group_ids );
 					break;
 				case 'humcore_deposit':
-					// Exclude deposits authored by the current user.
-					$wp_query_params['author__not_in'] = [ get_current_user_id() ];
+					/**
+					 * Exclude posts authored by the current user.
+					 * There's a bug, possibly in elasticpress-buddypress, that breaks 'author__not_in'.
+					 * This is a workaround to avoid using that param.
+					 */
+					$sql = [];
+					foreach ( get_networks() as $network ) {
+						switch_to_blog( $network->blog_id );
+						$sql[] = sprintf(
+							'SELECT ID FROM %s %s',
+							$wpdb->posts,
+							get_posts_by_author_sql( 'humcore_deposit', true, get_current_user_id() )
+						);
+						restore_current_blog();
+					}
+					$author_post_ids = $wpdb->get_col( implode( ' UNION ', $sql ) );
+
+					$wp_query_params['post__not_in'] = array_unique( $author_post_ids );
 					break;
 				default:
 					break;
@@ -154,7 +172,7 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			// Exclude user-hidden posts.
 			$user_hidden_posts = $this->_get_user_hidden_posts();
 			if ( isset( $user_hidden_posts[ $params['post_type'] ] ) ) {
-				$existing_post__not_in = isset( $wp_query_params['post__not_in'] ) ? $hcs_query_args['post__not_in'] : [];
+				$existing_post__not_in = isset( $wp_query_params['post__not_in'] ) ? $wp_query_params['post__not_in'] : [];
 
 				$wp_query_params['post__not_in'] = array_unique(
 					array_merge(
@@ -165,7 +183,8 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 			}
 		}
 
-		return new WP_Query( $wp_query_params );
+		$query = new WP_Query( $wp_query_params );
+		return $query;
 	}
 
 	/**
