@@ -44,7 +44,7 @@ add_action(
 	'bp_loaded', function () {
 		bp_register_template_stack(
 			function() {
-				return trailingslashit( __DIR__ ) . '/templates/';
+				return trailingslashit( __DIR__ ) . 'templates/';
 			}
 		);
 	}
