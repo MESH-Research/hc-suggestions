@@ -5,8 +5,6 @@
  * @package HC_Suggestions
  */
 
-use \MLA\Commons\Profile;
-
 /**
  * A WP_User in WP_Post disguise.
  */
@@ -27,9 +25,9 @@ $bp_avatar = bp_core_fetch_avatar(
 preg_match( '/<img.*>/', $bp_avatar, $matches );
 $avatar_img = $matches[0];
 
-$name        = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_NAME, $post->ID );
-$title       = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_TITLE, $post->ID );
-$affiliation = xprofile_get_field_data( Profile::XPROFILE_FIELD_NAME_INSTITUTIONAL_OR_OTHER_AFFILIATION, $post->ID );
+$name        = xprofile_get_field_data( HC_Member_Profiles_Component::NAME, $post->ID );
+$title       = xprofile_get_field_data( HC_Member_Profiles_Component::TITLE, $post->ID );
+$affiliation = xprofile_get_field_data( HC_Member_Profiles_Component::AFFILIATION, $post->ID );
 
 $common_term_names = array_intersect(
 	wpmn_get_object_terms(
