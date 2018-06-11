@@ -149,9 +149,9 @@ class HC_Suggestions_Widget extends WP_Widget {
 
 		<h3>Visibility</h3>
 
-		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_in' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_in'] ); ?> /> <?php echo "Show When Logged In"; ?></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_in' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_in' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_in'] ); ?> /> <?php echo 'Show When Logged In'; ?></label></p>
 
-		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_out' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_out'] ); ?> /> <?php echo "Show When Logged Out"; ?></label></p>
+		<p><label for="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'show_when_logged_out' ); ?>" id="<?php echo $this->get_field_id( 'show_when_logged_out' ); ?>" value="1" <?php checked( (bool) $instance['show_when_logged_out'] ); ?> /> <?php echo 'Show When Logged Out'; ?></label></p>
 
 		<h3>Tabs</h3>
 
