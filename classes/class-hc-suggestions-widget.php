@@ -113,7 +113,6 @@ class HC_Suggestions_Widget extends WP_Widget {
 			}
 		}
 
-		echo '<script>jQuery( hc_suggestions.init )</script>';
 		echo '</div>'; // close hc-suggestions-widget.
 	}
 

@@ -104,3 +104,5 @@ window.hc_suggestions  = {
 			} );
 	}
 }
+
+jQuery( hc_suggestions.init );
