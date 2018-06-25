@@ -57,11 +57,16 @@ $common_term_names = array_intersect(
 		<span class="terms">
 			<?php
 			foreach ( $common_term_names as $term_name ) {
-				$search_url = add_query_arg(
-					[
-						'academic_interests' => urlencode( $term_name ),
-					],
-					bp_get_members_directory_permalink()
+				$search_url = esc_url(
+					sprintf(
+						'/?%s',
+						http_build_query(
+							[
+								's'         => $term_name,
+								'post_type' => [ 'user' ],
+							]
+						)
+					)
 				);
 				printf(
 					'<a class="term" href="%s">%s</a>',
