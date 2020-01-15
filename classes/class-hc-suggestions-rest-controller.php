@@ -156,12 +156,12 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 						switch_to_blog( $network->blog_id );
 						$sql[] = $wpdb->prepare(
 							'SELECT ID FROM %s %s',
-							$wpdb->posts,
-							get_posts_by_author_sql( 'humcore_deposit', true, get_current_user_id() )
+							mysqli_real_escape_string( $wpdb->posts ),
+							mysqli_real_escape_string( get_posts_by_author_sql( 'humcore_deposit', true, get_current_user_id() ) )
 						);
 						restore_current_blog();
 					}
-					$author_post_ids = $wpdb->get_col( $wpdb->prepare( '%s', implode( ' UNION ', $sql ) ) );
+					$author_post_ids = $wpdb->get_col( $wpdb->prepare( '%s', implode( ' UNION ', mysqli_real_escape_string( $sql ) ) ) );
 
 					$wp_query_params['post__not_in'] = array_unique( $author_post_ids );
 					break;
