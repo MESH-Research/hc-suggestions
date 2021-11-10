@@ -90,18 +90,21 @@ window.hc_suggestions  = {
 	 * Initialize widget tab ui & load results for each tab
 	 */
 	init: function() {
-		$( '.' + hc_suggestions.widget_container_class )
-			.tabs()
-			.on( 'resize', hc_suggestions.handle_resize )
-			.find( 'div' ).each( function( i, el ) {
-				hc_suggestions.load_results(
-					{
-						s: $( el ).attr( 'data-hc-suggestions-query' ),
-						post_type: $( el ).attr( 'data-hc-suggestions-type' ),
-					},
-					$( el )
-				);
-			} );
+		var widget = $( '.' + hc_suggestions.widget_container_class );
+		if ( widget && typeof widget.tabs === 'function' ) {
+			widget
+				.tabs()
+				.on( 'resize', hc_suggestions.handle_resize )
+				.find( 'div' ).each( function( i, el ) {
+					hc_suggestions.load_results(
+						{
+							s: $( el ).attr( 'data-hc-suggestions-query' ),
+							post_type: $( el ).attr( 'data-hc-suggestions-type' ),
+						},
+						$( el )
+					);
+				} );
+		}
 	}
 }
 
