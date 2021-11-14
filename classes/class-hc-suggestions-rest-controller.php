@@ -129,10 +129,10 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 					);
 
 					// Exclude groups on society networks the current user does not belong to.
-					$current_user_memberships  = Humanities_Commons::hcommons_get_user_memberships();
+					$current_user_memberships = (array) bp_get_member_type( get_current_user_id(), false );
 					$non_member_society_groups = groups_get_groups(
 						[
-							'group_type__not_in' => $current_user_memberships['societies'],
+							'group_type__not_in' => $current_user_memberships,
 							'per_page'           => 999, // TODO This won't scale well.
 						]
 					);
@@ -154,14 +154,14 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 					$sql = [];
 					foreach ( get_networks() as $network ) {
 						switch_to_blog( $network->blog_id );
-						$sql[] = $wpdb->prepare(
-							'SELECT ID FROM %s %s',
-							mysqli_real_escape_string( $wpdb->posts ),
-							mysqli_real_escape_string( get_posts_by_author_sql( 'humcore_deposit', true, get_current_user_id() ) )
+						$sql[] = sprintf(
+							"SELECT ID FROM %s %s",
+							$wpdb->posts,
+							get_posts_by_author_sql( 'humcore_deposit', true, get_current_user_id() )
 						);
 						restore_current_blog();
 					}
-					$author_post_ids = $wpdb->get_col( $wpdb->prepare( '%s', implode( ' UNION ', mysqli_real_escape_string( $sql ) ) ) );
+					$author_post_ids = $wpdb->get_col( implode( ' UNION ', $sql ) );
 
 					$wp_query_params['post__not_in'] = array_unique( $author_post_ids );
 					break;
@@ -182,6 +182,26 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 				);
 			}
 		}
+
+		/**
+		 * By default, ElasticPress converts the 's' search parameter into a
+		 * phrase-type ElasticSearch query. The recommendations widget passes a
+		 * user's academic interests as a concactinated string, so we need to do
+		 * a normal match search.
+		 *
+		 * @see https://www.elasticpress.io/blog/2019/02/custom-search-with-elasticpress-how-to-limit-results-to-full-text-matches/
+		 * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/match-multi-word.html
+		 */
+		add_filter( 'ep_formatted_args', function( $formatted_args, $args ) {
+			if ( ! empty( $formatted_args['query']['bool']['should'] &&
+				is_array( $formatted_args['query']['bool']['should'] ) ) ) {
+					foreach ( $formatted_args['query']['bool']['should'] as &$es_search ) {
+						unset( $es_search['multi_match']['type'] );
+						$es_search['multi_match']['operator'] = 'or';
+					}
+				}
+			return $formatted_args;
+		}, 10, 2 );
 
 		$query = new WP_Query( $wp_query_params );
 		return $query;
