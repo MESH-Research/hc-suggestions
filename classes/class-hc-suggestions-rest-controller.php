@@ -92,10 +92,10 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 		 * (and possibly elsewhere) so the names must match here
 		 */
 		$wp_query_params = [
-			'ep_integrate' => true,
-			'post_type'    => $params['post_type'],
-			's'            => $params['s'],
-			'paged'        => isset( $params['paged'] ) ? $params['paged'] : 1,
+			'ep_integrate'  => true,
+			'post_type'     => $params['post_type'],
+			's'             => $params['s'],
+			'paged'         => isset( $params['paged'] ) ? $params['paged'] : 1,
 		];
 
 		if ( is_user_logged_in() ) {
@@ -215,25 +215,32 @@ class HC_Suggestions_REST_Controller extends WP_REST_Controller {
 	 */
 	public function query( WP_REST_Request $data ) {
 		$response_data = [];
+		$params = $data->get_query_params();
 
-		$hcs_query = $this->get_wp_query( $data->get_query_params() );
+		$hcs_query = $this->get_wp_query( $params );
 
-		if ( $hcs_query->have_posts() ) {
-			while ( $hcs_query->have_posts() ) {
-				$hcs_query->the_post();
+		while ( $hcs_query->have_posts() ) {
+			$hcs_query->the_post();
 
-				// TODO once BP is upgraded to 2.9, move this to the switch above.
-				if ( 'bp_group' === $params['post_type'] ) {
-					$group = groups_get_group( get_the_ID() );
-					if ( ! $group || 'public' !== $group->status ) {
-						continue;
-					}
+			// TODO once BP is upgraded to 2.9, move this to the switch above.
+			if ( 'bp_group' === $params['post_type'] ) {
+				$group = groups_get_group( get_the_ID() );
+				if ( ! $group || 'public' !== $group->status ) {
+					continue;
 				}
-
-				$response_data[ get_the_ID() ] = $this->_get_formatted_post();
 			}
-		}
 
+			// Skip humcore_deposit results that have parents (are attachments).
+			if ( 'humcore_deposit' === $params['post_type'] ) {
+				if ( $hcs_query->post->post_parent ) {
+					continue;
+				}
+			}
+
+
+			$response_data[ get_the_ID() ] = $this->_get_formatted_post();
+		}
+		
 		$response = new WP_REST_Response;
 
 		$response->set_data(
